@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { computed } from 'vue'
 import { useLogoStore, selectSlot } from '../composables/useLogoStore'
-import { TILES, categoryById, slotsByCategory, slotById } from '../specs/assets'
+import { TILES, categoryById, slotsByCategory, slotById, type TileDef } from '../specs/assets'
 import type { UploadedFile, PreviewKind } from '../lib/types'
 import { downloadBlob } from '../lib/download'
 import BrowserTabPreview from './previews/BrowserTabPreview.vue'
@@ -60,10 +60,34 @@ function darkFile(catId: string): UploadedFile | null {
   return lightFile(catId)
 }
 
-function propsFor(tile: { category: string; preview: PreviewKind }): Record<string, unknown> {
-  const base: Record<string, unknown> = { img: lightFile(tile.category) }
-  if (['navbar', 'footer', 'browser-tab', 'search-results'].includes(tile.preview)) {
-    base.imgDark = darkFile(tile.category)
+interface RenderItem {
+  tile: TileDef
+  key: string
+  forceVariant?: 'light' | 'dark'
+}
+
+/** 全模式下,og 分享卡复制成两张整卡对比(各带卡框);其余仍单卡,内部浅深堆叠 */
+const renderItems = computed<RenderItem[]>(() => {
+  const out: RenderItem[] = []
+  for (const tile of TILES) {
+    if (tile.preview === 'og-card' && state.ui.previewMode === 'both') {
+      out.push({ tile, key: `${tile.id}-light`, forceVariant: 'light' })
+      out.push({ tile, key: `${tile.id}-dark`, forceVariant: 'dark' })
+    } else {
+      out.push({ tile, key: tile.id })
+    }
+  }
+  return out
+})
+
+function propsFor(item: RenderItem): Record<string, unknown> {
+  const { category, preview } = item.tile
+  const base: Record<string, unknown> = { img: lightFile(category) }
+  if (['navbar', 'footer', 'browser-tab', 'search-results'].includes(preview)) {
+    base.imgDark = darkFile(category)
+  }
+  if (preview === 'og-card' && item.forceVariant) {
+    base.forceVariant = item.forceVariant
   }
   return base
 }
@@ -106,30 +130,34 @@ function downloadOriginal(): void {
     <div class="flex-1 overflow-y-auto p-4">
       <div class="grid gap-4" style="grid-template-columns: repeat(auto-fill, minmax(300px, 1fr))">
         <div
-          v-for="tile in TILES"
-          :key="tile.id"
+          v-for="item in renderItems"
+          :key="item.key"
           class="cursor-pointer overflow-hidden rounded-xl border transition-all"
           :class="
-            isLinked(tile.category)
+            isLinked(item.tile.category)
               ? 'border-blue-500 bg-slate-900/70 ring-2 ring-blue-500/40'
               : 'border-slate-800 bg-slate-900/30 hover:border-slate-700'
           "
-          @click="clickTile(tile.category)"
+          @click="clickTile(item.tile.category)"
         >
           <div class="flex items-center gap-2 border-b border-slate-800/60 px-3 py-2">
-            <span class="h-2 w-2 rounded-full" :style="{ background: accentOf(tile.category) }"></span>
-            <span class="text-xs font-medium text-slate-200">{{ tile.label }}</span>
-            <span v-if="isLinked(tile.category)" class="ml-auto inline-flex items-center gap-1 text-[10px] text-blue-300">
+            <span class="h-2 w-2 rounded-full" :style="{ background: accentOf(item.tile.category) }"></span>
+            <span class="text-xs font-medium text-slate-200">{{ item.tile.label }}</span>
+            <span
+              v-if="item.forceVariant"
+              class="rounded bg-slate-700 px-1.5 text-[10px] text-slate-300"
+            >{{ item.forceVariant === 'light' ? '浅' : '深' }}</span>
+            <span v-if="isLinked(item.tile.category)" class="ml-auto inline-flex items-center gap-1 text-[10px] text-blue-300">
               <span class="h-1.5 w-1.5 rounded-full bg-blue-400"></span>关联
             </span>
-            <span v-else-if="hasFile(tile.category)" class="ml-auto text-[10px] text-slate-600">已上传</span>
+            <span v-else-if="hasFile(item.tile.category)" class="ml-auto text-[10px] text-slate-600">已上传</span>
           </div>
 
           <div class="p-3">
-            <component :is="PREVIEWS[tile.preview]" v-bind="propsFor(tile)" />
+            <component :is="PREVIEWS[item.tile.preview]" v-bind="propsFor(item)" />
           </div>
 
-          <div class="px-3 pb-2.5 text-[10px] leading-snug text-slate-500">{{ tile.desc }}</div>
+          <div class="px-3 pb-2.5 text-[10px] leading-snug text-slate-500">{{ item.tile.desc }}</div>
         </div>
       </div>
     </div>
