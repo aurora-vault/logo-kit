@@ -14,7 +14,7 @@ const darkLogo = computed(() => props.imgDark || props.img)
 <template>
   <div class="space-y-3">
     <span class="block text-xs text-slate-400">导航栏(桌面 / 移动 · 深浅两版 logo)</span>
-    <div :class="isBoth ? 'grid grid-cols-2 gap-2' : 'space-y-2'">
+    <div :class="isBoth ? 'flex flex-col gap-2' : 'space-y-2'">
       <div v-if="showLight" class="space-y-2">
         <div class="flex items-center gap-2 rounded-md border border-black/10 px-2.5 py-2" :style="{ background: bgLight }">
           <img v-if="img" :src="img.url" class="h-6 w-auto object-contain" alt="nav" />

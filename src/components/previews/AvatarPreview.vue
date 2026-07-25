@@ -10,7 +10,7 @@ const { bgLight, bgDark, showLight, showDark, isBoth } = usePreviewBg()
 <template>
   <div class="space-y-3">
     <span class="block text-xs text-slate-400">社交头像(圆 / 圆角裁切)</span>
-    <div :class="isBoth ? 'grid grid-cols-2 gap-2' : ''">
+    <div :class="isBoth ? 'flex flex-col gap-2' : ''">
       <div v-if="showLight" class="flex items-center justify-around rounded-lg p-3" :style="{ background: bgLight }">
         <div class="flex flex-col items-center gap-1">
           <img v-if="img" :src="img.url" class="h-14 w-14 object-cover" style="border-radius: 50%" alt="avatar" />

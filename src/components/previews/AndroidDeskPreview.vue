@@ -17,7 +17,7 @@ const shapes = [
 <template>
   <div class="space-y-3">
     <span class="block text-xs text-slate-400">安卓桌面(多形状裁切 + safe zone)</span>
-    <div :class="isBoth ? 'grid grid-cols-2 gap-2' : ''">
+    <div :class="isBoth ? 'flex flex-col gap-2' : ''">
       <div v-if="showLight" class="grid grid-cols-4 gap-2 rounded-lg p-3" :style="{ background: bgLight }">
         <div v-for="sh in shapes" :key="sh.id" class="flex flex-col items-center gap-1">
           <div class="relative aspect-square w-full">

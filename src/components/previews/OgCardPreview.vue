@@ -9,7 +9,7 @@ const { bgLight, bgDark, showLight, showDark, isBoth } = usePreviewBg()
 <template>
   <div class="space-y-3">
     <span class="block text-xs text-slate-400">社交分享卡(Twitter / 微信 / TG)</span>
-    <div :class="isBoth ? 'grid grid-cols-2 gap-2' : ''">
+    <div :class="isBoth ? 'flex flex-col gap-2' : ''">
       <div v-if="showLight" class="rounded-lg p-1.5" :style="{ background: bgLight }">
         <div class="overflow-hidden rounded-md border border-black/10" style="aspect-ratio: 1200 / 630">
           <img v-if="img" :src="img.url" class="h-full w-full object-cover" alt="og" />
