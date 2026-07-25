@@ -121,11 +121,11 @@ export const SLOTS: SlotDef[] = [
 
 /** 右栏宫格预览单元(9 个,覆盖博客 logo 全部使用场景) */
 export const TILES: TileDef[] = [
-  { id: 't-tab', label: '浏览器标签 / 书签', preview: 'browser-tab', category: 'favicon', desc: '桌面标签 · 书签栏(深浅两版 favicon)' },
+  { id: 't-tab', label: '浏览器标签 / 书签', preview: 'browser-tab', category: 'favicon', desc: '桌面标签 · 书签栏 · 移动地址栏主题色' },
   { id: 't-search', label: '搜索引擎结果', preview: 'search-results', category: 'favicon', desc: 'Google / Bing 结果标题旁的小图标' },
   { id: 't-ios', label: 'iOS 主屏', preview: 'ios-home', category: 'ios', desc: 'iPhone / iPad 主屏 · superellipse 裁切' },
   { id: 't-android', label: '安卓 / PWA 桌面', preview: 'android-desk', category: 'pwa', desc: '多形状裁切 + maskable 安全区' },
-  { id: 't-splash', label: 'PWA 安装 · 启动屏', preview: 'pwa-splash', category: 'pwa', desc: '地址栏(theme)+ 启动屏(bg)一屏同看,调 bg 即改 manifest' },
+  { id: 't-splash', label: 'PWA 启动闪屏', preview: 'pwa-splash', category: 'pwa', desc: '启动时图标 + 背景色(取自 bg)' },
   { id: 't-avatar', label: '社交头像', preview: 'avatar', category: 'avatar', desc: '圆 / 圆角裁切 · Twitter / GitHub / 微信' },
   { id: 't-navbar', label: '导航栏', preview: 'navbar', category: 'nav', desc: '桌面 / 移动 / 吸顶 · 透明横版(深浅两版)' },
   { id: 't-footer', label: '页脚 / 邮件', preview: 'footer', category: 'nav', desc: '页脚 · 邮件签名(复用横版 logo)' },
