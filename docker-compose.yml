@@ -1,0 +1,29 @@
+name: logo-kit
+
+services:
+  logo-kit:
+    build: .
+    image: pxman/logo-kit:latest
+    container_name: logo-kit
+    restart: unless-stopped
+    volumes:
+      - ./nginx-conf/default.conf:/etc/nginx/conf.d/default.conf:ro
+    networks:
+      npm-net:
+        aliases:
+          - logo-kit
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"
+    healthcheck:
+      test: ["CMD", "wget", "-q", "-O", "-", "http://127.0.0.1/"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+
+networks:
+  npm-net:
+    external: true
+    name: nginx-proxy-manager_npm-net

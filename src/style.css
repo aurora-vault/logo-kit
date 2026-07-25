@@ -1,0 +1,35 @@
+@import "tailwindcss";
+
+/* Tailwind v4:启用基于 .dark 类的手动深色模式切换(而非 prefers-color-scheme) */
+@custom-variant dark (&:where(.dark, .dark *));
+
+html,
+body,
+#app {
+  height: 100%;
+}
+
+body {
+  margin: 0;
+  font-family: 'Segoe UI', system-ui, -apple-system, 'Microsoft YaHei', sans-serif;
+  font-variant-numeric: tabular-nums;
+}
+
+/* 滑杆统一风格 */
+input[type='range'] {
+  accent-color: #3b82f6;
+}
+
+/* 颜色选择器去除默认边框 */
+input[type='color'] {
+  border: none;
+  background: none;
+  cursor: pointer;
+}
+input[type='color']::-webkit-color-swatch-wrapper {
+  padding: 0;
+}
+input[type='color']::-webkit-color-swatch {
+  border: 1px solid rgba(148, 163, 184, 0.4);
+  border-radius: 6px;
+}

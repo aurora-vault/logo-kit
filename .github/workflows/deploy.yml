@@ -1,0 +1,19 @@
+name: Deploy logo-kit
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+jobs:
+  deploy:
+    runs-on: aurora
+    if: github.actor == 'pxMan79'
+    steps:
+      - name: Sync and deploy
+        run: |
+          set -e
+          cd /opt/projects/logo-kit
+          git fetch --all --prune
+          git reset --hard origin/main
+          docker compose up -d --build --remove-orphans
+          docker ps --filter name=logo-kit

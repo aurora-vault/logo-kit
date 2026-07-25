@@ -1,0 +1,32 @@
+{
+  "name": "logo-kit",
+  "version": "0.1.0",
+  "private": true,
+  "description": "logo 标准套件工作台 —— 无损上传成品,全场景实时预览,按标准命名一键打包部署",
+  "type": "module",
+  "license": "MIT",
+  "author": "pxMan79 <pxman79@foxmail.com>",
+  "homepage": "https://kit.shabox.fun",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/aurora-vault/logo-kit.git"
+  },
+  "keywords": ["logo", "favicon", "pwa", "og-image", "apple-touch-icon", "maskable", "preview", "branding", "toolkit"],
+  "scripts": {
+    "dev": "vite",
+    "build": "vue-tsc --noEmit && vite build",
+    "preview": "vite preview"
+  },
+  "dependencies": {
+    "jszip": "^3.10.1",
+    "vue": "^3.5.13"
+  },
+  "devDependencies": {
+    "@tailwindcss/vite": "^4.1.11",
+    "@vitejs/plugin-vue": "^5.2.4",
+    "tailwindcss": "^4.1.11",
+    "typescript": "~5.7.3",
+    "vite": "^6.3.5",
+    "vue-tsc": "^2.2.0"
+  }
+}

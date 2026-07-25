@@ -1,0 +1,209 @@
+<script setup lang="ts">
+import { ref, computed, watch, onUnmounted } from 'vue'
+import { useLogoStore } from './composables/useLogoStore'
+import { setLiveFavicon, resetLiveFavicon } from './composables/useLiveFavicon'
+import { buildLogoPack } from './lib/zip'
+import { downloadBlob } from './lib/download'
+import { buildManifest } from './lib/manifest'
+import { SLOTS, MANIFEST_FILE, CATEGORIES } from './specs/assets'
+import LeftSidebar from './components/LeftSidebar.vue'
+import PreviewStage from './components/PreviewStage.vue'
+
+const { state } = useLogoStore()
+const exporting = ref(false)
+
+const totalCount = SLOTS.length
+const doneCount = computed(() => SLOTS.filter((s) => state.files[s.id]).length)
+const previewModes = ['light', 'dark', 'both'] as const
+const modeLabel = (m: 'light' | 'dark' | 'both') => (m === 'light' ? '浅' : m === 'dark' ? '深' : '全')
+
+// 真实标签预览:开 → 用第一个已上传的 favicon(svg > 32 > 16 > ico)直设到本页 tab
+let liveTimer: number | undefined
+const favOrder = ['favicon-svg', 'favicon-32', 'favicon-16', 'favicon-ico']
+const liveUrl = computed(() => {
+  for (const id of favOrder) {
+    const f = state.files[id]
+    if (f) return f.url
+  }
+  return ''
+})
+
+function pushLive(): void {
+  if (state.ui.liveFavicon && liveUrl.value) setLiveFavicon(liveUrl.value)
+  else resetLiveFavicon()
+}
+
+watch(
+  () => [state.ui.liveFavicon, liveUrl.value] as const,
+  () => {
+    if (liveTimer) clearTimeout(liveTimer)
+    liveTimer = window.setTimeout(pushLive, 150)
+  },
+)
+
+onUnmounted(() => {
+  if (liveTimer) clearTimeout(liveTimer)
+  resetLiveFavicon()
+})
+
+async function exportAll(): Promise<void> {
+  exporting.value = true
+  try {
+    // 无损:已上传文件的原始 blob 原样打包,按标准文件名
+    const files: { name: string; blob: Blob }[] = []
+    for (const s of SLOTS) {
+      const f = state.files[s.id]
+      if (f) files.push({ name: s.fileName, blob: f.blob })
+    }
+    files.push({
+      name: MANIFEST_FILE,
+      blob: new Blob(
+        [
+          buildManifest({
+            name: state.ui.brandName,
+            shortName: state.ui.brandShort,
+            themeColor: state.ui.themeColor,
+            backgroundColor: state.ui.backgroundColor,
+          }),
+        ],
+        { type: 'application/manifest+json' },
+      ),
+    })
+    files.push({ name: 'README.md', blob: new Blob([packReadme()], { type: 'text/markdown' }) })
+    const zip = await buildLogoPack(files)
+    downloadBlob(zip, 'logo-pack.zip')
+  } finally {
+    exporting.value = false
+  }
+}
+
+function packReadme(): string {
+  const list = CATEGORIES.map((c) => {
+    const slots = SLOTS.filter((s) => s.category === c.id)
+    return `### ${c.label}\n${slots
+      .map((s) => `- \`${s.fileName}\` — ${s.width > 0 ? s.width + '×' + s.height : s.format.toUpperCase()}${s.variant ? ' (' + (s.variant === 'dark' ? '深色版' : '浅色版') + ')' : ''}`)
+      .join('\n')}`
+  }).join('\n\n')
+  return `# logo-pack
+
+由 logo-kit 生成。**无损** —— 工具不缩放、不派生,zip 内每个文件都是你上传的原始成品,按标准名部署即可。
+
+## 覆盖的使用场景(9 类)
+
+浏览器标签/书签 · 搜索引擎结果 · iOS 主屏 · 安卓/PWA 桌面 · PWA 启动闪屏 · 社交头像 · 导航栏 · 页脚/邮件 · 社交分享卡。
+
+## 深浅 logo 说明
+
+自带背景的方形图标(favicon/iOS/PWA/头像/og)深浅通用,一版即可;**透明单色横版 logo(导航栏/页脚)建议分别上传浅色版与深色版**,否则在反色背景上不可见。
+
+## 部署到 shabox-blog-web
+
+把文件放到 \`shabox-blog-web/public/\`。\`index.html\` 引用已就绪:
+
+\`\`\`html
+<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png" />
+<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png" />
+<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
+<link rel="manifest" href="/site.webmanifest" />
+<meta property="og:image" content="/og-image.png" />
+\`\`\`
+
+导航栏 logo:浅色背景用 \`/logo-nav.svg\`,深色背景用 \`/logo-nav-dark.svg\`(或 png)。
+
+## 文件清单(未上传的不会进 zip)
+
+${list}
+
+- \`${MANIFEST_FILE}\` — 由名称/短名/theme/bg 字段自动生成
+
+## 注意
+
+- 服务器对 \`.webmanifest\` 需返回 \`application/manifest+json\`。
+- 浏览器会回退到其它已声明尺寸;建议至少补齐 favicon.svg + favicon-32 + apple-touch-icon + android-512 + maskable + og-image。
+`
+}
+</script>
+
+<template>
+  <div class="flex h-screen flex-col overflow-hidden bg-slate-950 text-slate-100">
+    <header class="border-b border-slate-800 bg-slate-950/80 backdrop-blur">
+      <div class="flex flex-wrap items-center gap-3 px-4 py-2.5">
+        <h1 class="text-lg font-semibold">🔬 logo-kit</h1>
+        <span class="text-xs text-slate-500">无损 · 上传成品 · 全场景宫格预览</span>
+        <div class="ml-auto flex flex-wrap items-center gap-3 text-xs text-slate-400">
+          <span class="rounded bg-slate-800 px-2 py-1 text-[11px]">{{ doneCount }}/{{ totalCount }} 文件</span>
+
+          <!-- 预览模式总开关:浅 / 深 / 全 -->
+          <div class="flex items-center gap-1">
+            <span class="text-[11px] text-slate-500">预览</span>
+            <div class="flex overflow-hidden rounded-md border border-slate-700">
+              <button
+                v-for="m in previewModes"
+                :key="m"
+                :title="m === 'both' ? '浅色与深色并排显示' : m === 'light' ? '只看浅色背景' : '只看深色背景'"
+                :class="[
+                  'px-2 py-1 text-[11px]',
+                  state.ui.previewMode === m ? 'bg-slate-700 text-slate-100' : 'text-slate-400 hover:text-slate-200',
+                ]"
+                @click="state.ui.previewMode = m"
+              >
+                {{ modeLabel(m) }}
+              </button>
+            </div>
+          </div>
+
+          <label class="flex items-center gap-1.5" title="把当前 favicon 显示到本页浏览器标签上,看最真实的渲染效果">
+            <input type="checkbox" v-model="state.ui.liveFavicon" />
+            真实标签预览
+          </label>
+          <button
+            class="rounded-lg bg-blue-600 px-4 py-1.5 text-xs font-medium text-white hover:bg-blue-500 disabled:opacity-50"
+            :disabled="exporting || doneCount === 0"
+            @click="exportAll"
+          >
+            {{ exporting ? '打包中…' : '⬇ 导出全套 zip(无损)' }}
+          </button>
+        </div>
+      </div>
+      <!-- manifest / 主题元数据 -->
+      <div class="flex flex-wrap items-center gap-x-4 gap-y-1 border-t border-slate-800/60 px-4 py-1.5 text-xs text-slate-400">
+        <span class="text-[11px] text-slate-500">manifest / 主题</span>
+        <label class="flex items-center gap-1">
+          名称
+          <input v-model="state.ui.brandName" class="w-24 rounded border border-slate-700 bg-slate-800 px-2 py-0.5 text-xs text-slate-200" />
+        </label>
+        <label class="flex items-center gap-1">
+          短名
+          <input v-model="state.ui.brandShort" class="w-20 rounded border border-slate-700 bg-slate-800 px-2 py-0.5 text-xs text-slate-200" />
+        </label>
+        <label class="flex items-center gap-1" title="仅影响移动浏览器地址栏底色 + manifest theme_color">
+          theme <input type="color" v-model="state.ui.themeColor" class="h-5 w-8" />
+          <span class="text-[10px] text-slate-600">→ 地址栏</span>
+        </label>
+        <label class="flex items-center gap-1" title="仅影响 PWA 启动闪屏背景色 + manifest background_color">
+          bg <input type="color" v-model="state.ui.backgroundColor" class="h-5 w-8" />
+          <span class="text-[10px] text-slate-600">→ 启动屏</span>
+        </label>
+      </div>
+    </header>
+
+    <div class="relative flex min-h-0 flex-1">
+      <LeftSidebar v-show="!state.ui.sidebarCollapsed" />
+      <PreviewStage />
+
+      <!-- 侧栏收/展开按钮:贴在侧栏与右栏交界处 -->
+      <button
+        class="absolute top-1/2 z-20 grid h-14 w-5 place-items-center rounded-md border border-slate-700 bg-slate-900 text-[11px] text-slate-400 shadow hover:bg-slate-800 hover:text-slate-100"
+        :style="{
+          left: state.ui.sidebarCollapsed ? '0px' : '18rem',
+          transform: `translate(${state.ui.sidebarCollapsed ? '0' : '-50%'}, -50%)`,
+        }"
+        :title="state.ui.sidebarCollapsed ? '展开文件列表' : '收起文件列表'"
+        @click="state.ui.sidebarCollapsed = !state.ui.sidebarCollapsed"
+      >
+        {{ state.ui.sidebarCollapsed ? '▶' : '◀' }}
+      </button>
+    </div>
+  </div>
+</template>
