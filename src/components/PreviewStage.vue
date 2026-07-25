@@ -125,10 +125,7 @@ function downloadOriginal(): void {
             <span v-else-if="hasFile(tile.category)" class="ml-auto text-[10px] text-slate-600">已上传</span>
           </div>
 
-          <div
-            class="p-3"
-            :style="state.ui.globalBg ? { background: state.ui.backgroundColor } : undefined"
-          >
+          <div class="p-3">
             <component :is="PREVIEWS[tile.preview]" v-bind="propsFor(tile)" />
           </div>
 

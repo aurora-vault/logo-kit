@@ -25,6 +25,11 @@ const totalCount = SLOTS.length
 const doneCount = computed(() => SLOTS.filter((s) => state.files[s.id]).length)
 const previewModes = ['light', 'dark', 'both'] as const
 const modeLabel = (m: 'light' | 'dark' | 'both') => (m === 'light' ? '浅' : m === 'dark' ? '深' : '全')
+/** 切浅/深/全 时清掉全局色覆盖,回到预设底色 */
+function setMode(m: 'light' | 'dark' | 'both') {
+  state.ui.globalBg = false
+  state.ui.previewMode = m
+}
 
 // 真实标签预览:开 → 用第一个已上传的 favicon(svg > 32 > 16 > ico)直设到本页 tab
 let liveTimer: number | undefined
@@ -162,7 +167,7 @@ ${list}
                   'px-2 py-1 text-[11px]',
                   state.ui.previewMode === m ? 'bg-slate-700 text-slate-100' : 'text-slate-400 hover:text-slate-200',
                 ]"
-                @click="state.ui.previewMode = m"
+                @click="setMode(m)"
               >
                 {{ modeLabel(m) }}
               </button>
