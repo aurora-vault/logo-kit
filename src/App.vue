@@ -109,6 +109,13 @@ function packReadme(): string {
 <meta property="og:image" content="/og-image.png" />
 \`\`\`
 
+若上传了 \`favicon-dark.svg\`,把 favicon link 换成 media 查询,跟随系统深浅自动切换:
+
+\`\`\`html
+<link rel="icon" type="image/svg+xml" href="/favicon.svg" media="(prefers-color-scheme: light)" />
+<link rel="icon" type="image/svg+xml" href="/favicon-dark.svg" media="(prefers-color-scheme: dark)" />
+\`\`\`
+
 导航栏 logo:浅色背景用 \`/logo-nav.svg\`,深色背景用 \`/logo-nav-dark.svg\`(或 png)。
 
 ## 文件清单(未上传的不会进 zip)

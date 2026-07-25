@@ -47,8 +47,9 @@ export const CATEGORIES: CategoryDef[] = [
     label: '浏览器图标',
     accent: '#3b82f6',
     scenarios: '浏览器标签 · 书签 · 历史 · 搜索结果 · 桌面快捷方式',
-    uploadHint: '方形主图标(自带背景,深浅通用);SVG 矢量首选,另备 16/32 PNG + ICO',
+    uploadHint: '方形主图标(自带背景);SVG 矢量首选,另备 16/32 PNG + ICO。可选传深色版,系统深色时自动切',
     displaySlot: 'favicon-32',
+    darkDisplaySlot: 'favicon-dark-svg',
   },
   {
     id: 'ios',
@@ -99,6 +100,7 @@ export const SLOTS: SlotDef[] = [
   { id: 'favicon-16', fileName: 'favicon-16x16.png', category: 'favicon', format: 'png', width: 16, height: 16, hint: '16px 老浏览器' },
   { id: 'favicon-32', fileName: 'favicon-32x32.png', category: 'favicon', format: 'png', width: 32, height: 32, hint: '32px 标准标签' },
   { id: 'favicon-ico', fileName: 'favicon.ico', category: 'favicon', format: 'ico', width: 0, height: 0, hint: '16/32/48 桌面快捷方式兜底' },
+  { id: 'favicon-dark-svg', fileName: 'favicon-dark.svg', category: 'favicon', format: 'svg', width: 0, height: 0, hint: '深色版 · 系统深色时 media 查询自动切', variant: 'dark' },
   // ios
   { id: 'apple-touch', fileName: 'apple-touch-icon.png', category: 'ios', format: 'png', width: 180, height: 180, hint: '180px 不透明' },
   // pwa

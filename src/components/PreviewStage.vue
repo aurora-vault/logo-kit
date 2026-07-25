@@ -62,7 +62,7 @@ function darkFile(catId: string): UploadedFile | null {
 
 function propsFor(tile: { category: string; preview: PreviewKind }): Record<string, unknown> {
   const base: Record<string, unknown> = { img: lightFile(tile.category) }
-  if (tile.preview === 'navbar' || tile.preview === 'footer') {
+  if (['navbar', 'footer', 'browser-tab', 'search-results'].includes(tile.preview)) {
     base.imgDark = darkFile(tile.category)
   }
   return base

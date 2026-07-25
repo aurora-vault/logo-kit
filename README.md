@@ -23,6 +23,7 @@
 | 文件 | 尺寸 | 用途 |
 |---|---|---|
 | favicon.svg | 矢量 | 浏览器标签页首选 |
+| favicon-dark.svg | 矢量 | 深色模式自动切(可选,配 media 查询) |
 | favicon-16x16.png / -32x32.png | 16 / 32 | 标签 / 书签 / 搜索结果 |
 | favicon.ico | 16/32/48 | 老浏览器 / 桌面快捷方式 |
 | apple-touch-icon.png | 180 | iOS 主屏 |
