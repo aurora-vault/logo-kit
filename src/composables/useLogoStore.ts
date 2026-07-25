@@ -8,12 +8,10 @@ export interface LogoUIState {
   themeColor: string
   backgroundColor: string
   liveFavicon: boolean
-  /** 全局预览模式:浅 / 深 / 全(并排) */
-  previewMode: 'light' | 'dark' | 'both'
+  /** 全局预览模式:浅 / 深 / 全(并排)/ 色(自定义背景色,= theme+bg) */
+  previewMode: 'light' | 'dark' | 'both' | 'custom'
   /** 左栏整体是否收起 */
   sidebarCollapsed: boolean
-  /** 背景色是否辐射到所有卡片(全局统一背景);false=仅 theme+bg(地址栏+启动屏) */
-  globalBg: boolean
 }
 
 interface LogoState {
@@ -43,7 +41,6 @@ const state = reactive<LogoState>({
     liveFavicon: false,
     previewMode: 'both',
     sidebarCollapsed: false,
-    globalBg: false,
   },
 })
 

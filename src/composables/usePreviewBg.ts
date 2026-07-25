@@ -13,7 +13,7 @@ const DARK = '#0f172a'
  */
 export function usePreviewBg() {
   const { state } = useLogoStore()
-  const custom = computed(() => state.ui.globalBg)
+  const custom = computed(() => state.ui.previewMode === 'custom')
   const color = computed(() => state.ui.backgroundColor)
   const bgLight = computed(() => (custom.value ? color.value : LIGHT))
   const bgDark = computed(() => (custom.value ? color.value : DARK))

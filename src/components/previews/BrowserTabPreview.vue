@@ -9,7 +9,7 @@ const props = withDefaults(defineProps<{ img: UploadedFile | null; imgDark?: Upl
 const { state } = useLogoStore()
 const { bgLight, bgDark, showLight, showDark, isBoth } = usePreviewBg()
 const darkLogo = computed(() => props.imgDark || props.img)
-const wrapBg = computed(() => (state.ui.globalBg ? state.ui.backgroundColor : state.ui.previewMode === 'light' ? bgLight.value : bgDark.value))
+const wrapBg = computed(() => (state.ui.previewMode === 'custom' ? state.ui.backgroundColor : state.ui.previewMode === 'light' ? bgLight.value : bgDark.value))
 </script>
 
 <template>

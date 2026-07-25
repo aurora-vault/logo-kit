@@ -12,23 +12,19 @@ import PreviewStage from './components/PreviewStage.vue'
 const { state } = useLogoStore()
 const exporting = ref(false)
 
-/** 背景色 = theme(地址栏)+ bg(启动屏)永久合并;勾选 globalBg 时辐射到所有卡片 */
-const bgColor = computed({
-  get: () => state.ui.themeColor,
-  set: (v: string) => {
-    state.ui.themeColor = v
-    state.ui.backgroundColor = v
-  },
-})
-
 const totalCount = SLOTS.length
 const doneCount = computed(() => SLOTS.filter((s) => state.files[s.id]).length)
 const previewModes = ['light', 'dark', 'both'] as const
 const modeLabel = (m: 'light' | 'dark' | 'both') => (m === 'light' ? '浅' : m === 'dark' ? '深' : '全')
-/** 切浅/深/全 时清掉全局色覆盖,回到预设底色 */
+/** 浅 / 深 / 全 预设底色 */
 function setMode(m: 'light' | 'dark' | 'both') {
-  state.ui.globalBg = false
   state.ui.previewMode = m
+}
+/** 自由背景色:选色即用此色(theme + bg 同步),并切到「色」模式 */
+function setCustom(v: string) {
+  state.ui.themeColor = v
+  state.ui.backgroundColor = v
+  state.ui.previewMode = 'custom'
 }
 
 // 真实标签预览:开 → 用第一个已上传的 favicon(svg > 32 > 16 > ico)直设到本页 tab
@@ -155,7 +151,7 @@ ${list}
         <div class="ml-auto flex flex-wrap items-center gap-3 text-xs text-slate-400">
           <span class="rounded bg-slate-800 px-2 py-1 text-[11px]">{{ doneCount }}/{{ totalCount }} 文件</span>
 
-          <!-- 预览模式总开关:浅 / 深 / 全 -->
+          <!-- 预览模式总开关:浅 / 深 / 全 / 色(自由背景色) -->
           <div class="flex items-center gap-1">
             <span class="text-[11px] text-slate-500">预览</span>
             <div class="flex overflow-hidden rounded-md border border-slate-700">
@@ -171,6 +167,18 @@ ${list}
               >
                 {{ modeLabel(m) }}
               </button>
+              <label
+                class="flex items-center px-1.5"
+                :class="state.ui.previewMode === 'custom' ? 'bg-slate-700' : 'hover:bg-slate-800'"
+                title="自由背景色:选色即用此色(= theme + bg),所有卡片统一此底色"
+              >
+                <input
+                  type="color"
+                  :value="state.ui.backgroundColor"
+                  class="h-4 w-5 cursor-pointer"
+                  @input="setCustom(($event.target as HTMLInputElement).value)"
+                />
+              </label>
             </div>
           </div>
 
@@ -198,16 +206,7 @@ ${list}
           短名
           <input v-model="state.ui.brandShort" class="w-20 rounded border border-slate-700 bg-slate-800 px-2 py-0.5 text-xs text-slate-200" />
         </label>
-        <!-- 背景色:theme(地址栏)+ bg(启动屏)合并为一个;勾选「全局」辐射到所有卡片 -->
-        <label class="flex items-center gap-1" title="theme_color + background_color 合并(地址栏 + 启动屏)">
-          背景色 <input type="color" v-model="bgColor" class="h-5 w-8" />
-        </label>
-        <label
-          class="flex items-center gap-1"
-          title="勾选:此色作所有卡片统一背景(全局);不勾:只调 theme+bg(必要)"
-        >
-          <input type="checkbox" v-model="state.ui.globalBg" /> 全局
-        </label>
+        <span class="text-[10px] text-slate-600">theme / bg 取自「预览 · 色」选项</span>
       </div>
     </header>
 
