@@ -12,17 +12,13 @@ import PreviewStage from './components/PreviewStage.vue'
 const { state } = useLogoStore()
 const exporting = ref(false)
 
-/** 背景色合并:theme(地址栏)+ bg(启动屏)默认同色;split=true 时分开独立调 */
-const split = ref(false)
+/** 背景色 = theme(地址栏)+ bg(启动屏)永久合并;勾选 globalBg 时辐射到所有卡片 */
 const bgColor = computed({
   get: () => state.ui.themeColor,
   set: (v: string) => {
     state.ui.themeColor = v
     state.ui.backgroundColor = v
   },
-})
-watch(split, (s) => {
-  if (!s) state.ui.backgroundColor = state.ui.themeColor
 })
 
 const totalCount = SLOTS.length
@@ -197,27 +193,15 @@ ${list}
           短名
           <input v-model="state.ui.brandShort" class="w-20 rounded border border-slate-700 bg-slate-800 px-2 py-0.5 text-xs text-slate-200" />
         </label>
-        <!-- 背景色:theme(地址栏)+ bg(启动屏)默认合并同色;勾选「分开」独立调 -->
-        <label
-          v-if="!split"
-          class="flex items-center gap-1"
-          title="theme_color + background_color 合并(地址栏 + 启动屏)。theme 与 bg 通常相同"
-        >
+        <!-- 背景色:theme(地址栏)+ bg(启动屏)合并为一个;勾选「全局」辐射到所有卡片 -->
+        <label class="flex items-center gap-1" title="theme_color + background_color 合并(地址栏 + 启动屏)">
           背景色 <input type="color" v-model="bgColor" class="h-5 w-8" />
-          <span class="text-[10px] text-slate-600">theme + bg</span>
         </label>
-        <template v-else>
-          <label class="flex items-center gap-1" title="移动浏览器地址栏底色 + manifest theme_color">
-            theme <input type="color" v-model="state.ui.themeColor" class="h-5 w-8" />
-            <span class="text-[10px] text-slate-600">→ 地址栏</span>
-          </label>
-          <label class="flex items-center gap-1" title="PWA 启动闪屏背景色 + manifest background_color">
-            bg <input type="color" v-model="state.ui.backgroundColor" class="h-5 w-8" />
-            <span class="text-[10px] text-slate-600">→ 启动屏</span>
-          </label>
-        </template>
-        <label class="flex items-center gap-1" title="theme 与 bg 通常相同;需要不同时勾选分开调">
-          <input type="checkbox" v-model="split" /> 分开
+        <label
+          class="flex items-center gap-1"
+          title="勾选:此色作所有卡片统一背景(全局);不勾:只调 theme+bg(必要)"
+        >
+          <input type="checkbox" v-model="state.ui.globalBg" /> 全局
         </label>
       </div>
     </header>

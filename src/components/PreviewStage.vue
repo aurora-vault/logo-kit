@@ -4,6 +4,7 @@ import { useLogoStore, selectSlot } from '../composables/useLogoStore'
 import { TILES, categoryById, slotsByCategory, slotById } from '../specs/assets'
 import type { UploadedFile, PreviewKind } from '../lib/types'
 import { downloadBlob } from '../lib/download'
+import { textOn, isLight } from '../lib/color'
 import BrowserTabPreview from './previews/BrowserTabPreview.vue'
 import SearchResultsPreview from './previews/SearchResultsPreview.vue'
 import IosHomePreview from './previews/IosHomePreview.vue'
@@ -58,6 +59,13 @@ function darkFile(catId: string): UploadedFile | null {
   const dark = slots.find((s) => s.variant === 'dark' && state.files[s.id])
   if (dark) return state.files[dark.id]
   return lightFile(catId)
+}
+
+/** 全局背景模式:按背景亮度取浅/深变体(透明 logo 在反色背景上才可见) */
+function globalImg(tile: { category: string }): UploadedFile | null {
+  return isLight(state.ui.backgroundColor)
+    ? lightFile(tile.category)
+    : darkFile(tile.category) || lightFile(tile.category)
 }
 
 function propsFor(tile: { category: string; preview: PreviewKind }): Record<string, unknown> {
@@ -126,7 +134,26 @@ function downloadOriginal(): void {
           </div>
 
           <div class="p-3">
-            <component :is="PREVIEWS[tile.preview]" v-bind="propsFor(tile)" />
+            <div
+              v-if="state.ui.globalBg"
+              class="flex items-center justify-center rounded-lg p-4"
+              :style="{ background: state.ui.backgroundColor, minHeight: '140px' }"
+            >
+              <img
+                v-if="globalImg(tile)"
+                :src="globalImg(tile)!.url"
+                class="max-h-28 max-w-full object-contain"
+                alt=""
+              />
+              <span
+                v-else
+                class="text-[10px] opacity-70"
+                :style="{ color: textOn(state.ui.backgroundColor) }"
+              >
+                未上传
+              </span>
+            </div>
+            <component v-else :is="PREVIEWS[tile.preview]" v-bind="propsFor(tile)" />
           </div>
 
           <div class="px-3 pb-2.5 text-[10px] leading-snug text-slate-500">{{ tile.desc }}</div>
