@@ -1,7 +1,6 @@
 <script setup lang="ts">
 import { computed } from 'vue'
 import { useLogoStore } from '../../composables/useLogoStore'
-import { textOn } from '../../lib/color'
 import type { UploadedFile } from '../../lib/types'
 
 const props = withDefaults(defineProps<{ img: UploadedFile | null; imgDark?: UploadedFile | null }>(), {
@@ -66,16 +65,6 @@ const darkLogo = computed(() => props.imgDark || props.img)
       </div>
     </div>
 
-    <!-- 移动地址栏:取自 theme -->
-    <div>
-      <div class="mb-1 text-[11px] text-slate-500">移动地址栏主题色(theme)</div>
-      <div class="rounded-xl p-2" style="background: #e2e8f0">
-        <div class="flex items-center gap-2 rounded-full px-3 py-1.5" :style="{ background: state.ui.themeColor }">
-          <span class="text-[10px]" :style="{ color: textOn(state.ui.themeColor) }">🔒 shabox.fun</span>
-        </div>
-      </div>
-    </div>
-
-    <p class="text-[10px] text-slate-500">深色背景自动用深色版 favicon(若已上传)。标签栏仅 16px,确认缩小后清晰。</p>
+    <p class="text-[10px] text-slate-500">深色背景自动用深色版 favicon(若已上传)。标签栏仅 16px,确认缩小后清晰。移动地址栏主题色见「PWA 安装」预览。</p>
   </div>
 </template>

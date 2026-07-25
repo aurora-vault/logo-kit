@@ -33,3 +33,26 @@ input[type='color']::-webkit-color-swatch {
   border: 1px solid rgba(148, 163, 184, 0.4);
   border-radius: 6px;
 }
+
+/* 细滚动条:侧栏 / 预览区统一深色 slim 风格(webkit + firefox) */
+* {
+  scrollbar-width: thin;
+  scrollbar-color: #475569 transparent;
+}
+*::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+*::-webkit-scrollbar-track {
+  background: transparent;
+}
+*::-webkit-scrollbar-thumb {
+  background: #334155;
+  background-clip: padding-box;
+  border: 2px solid transparent;
+  border-radius: 9999px;
+}
+*::-webkit-scrollbar-thumb:hover {
+  background: #475569;
+  background-clip: padding-box;
+}

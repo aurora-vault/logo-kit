@@ -8,7 +8,7 @@ import BrowserTabPreview from './previews/BrowserTabPreview.vue'
 import SearchResultsPreview from './previews/SearchResultsPreview.vue'
 import IosHomePreview from './previews/IosHomePreview.vue'
 import AndroidDeskPreview from './previews/AndroidDeskPreview.vue'
-import PwaSplashPreview from './previews/PwaSplashPreview.vue'
+import MobileInstallPreview from './previews/MobileInstallPreview.vue'
 import AvatarPreview from './previews/AvatarPreview.vue'
 import NavbarPreview from './previews/NavbarPreview.vue'
 import FooterPreview from './previews/FooterPreview.vue'
@@ -21,7 +21,7 @@ const PREVIEWS: Record<PreviewKind, unknown> = {
   'search-results': SearchResultsPreview,
   'ios-home': IosHomePreview,
   'android-desk': AndroidDeskPreview,
-  'pwa-splash': PwaSplashPreview,
+  'pwa-splash': MobileInstallPreview,
   avatar: AvatarPreview,
   navbar: NavbarPreview,
   footer: FooterPreview,
