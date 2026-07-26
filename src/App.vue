@@ -195,15 +195,15 @@ ${list}
           </button>
         </div>
       </div>
-      <!-- PWA manifest:名称 + 短名 -->
+      <!-- 站点名称:用于预览显示,并写入 manifest 的 name / short_name -->
       <div class="flex flex-wrap items-center gap-x-4 gap-y-1 border-t border-slate-800/60 px-4 py-1.5 text-xs text-slate-400">
-        <span class="text-[11px] text-slate-500">PWA manifest</span>
+        <span class="text-[11px] text-slate-500">站点名称</span>
         <label class="flex items-center gap-1">
-          名称
+          全称
           <input v-model="state.ui.brandName" class="w-24 rounded border border-slate-700 bg-slate-800 px-2 py-0.5 text-xs text-slate-200" />
         </label>
         <label class="flex items-center gap-1">
-          短名
+          简称
           <input v-model="state.ui.brandShort" class="w-20 rounded border border-slate-700 bg-slate-800 px-2 py-0.5 text-xs text-slate-200" />
         </label>
       </div>
