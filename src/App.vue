@@ -145,10 +145,30 @@ ${list}
 <template>
   <div class="flex h-screen flex-col overflow-hidden bg-slate-950 text-slate-100">
     <header class="border-b border-slate-800 bg-slate-950/80 backdrop-blur">
-      <div class="flex flex-wrap items-center gap-3 px-4 py-2.5">
-        <h1 class="text-lg font-semibold">🔬 logo-kit</h1>
-        <span class="text-xs text-slate-500">无损 · 上传成品 · 全场景宫格预览</span>
-        <div class="ml-auto flex flex-wrap items-center gap-3 text-xs text-slate-400">
+      <div class="flex flex-wrap items-center gap-x-3 gap-y-2 px-4 py-2.5">
+        <!-- 左:标题 -->
+        <div class="flex items-center gap-3">
+          <h1 class="text-lg font-semibold">🔬 logo-kit</h1>
+          <span class="hidden text-xs text-slate-500 sm:inline">无损 · 上传成品 · 全场景宫格预览</span>
+        </div>
+
+        <!-- 中:站点名称(预览显示 + 写入 manifest)-->
+        <div class="flex flex-1 justify-center">
+          <div class="flex items-center gap-2 text-xs text-slate-400">
+            <span class="text-[11px] text-slate-500">站点名称</span>
+            <label class="flex items-center gap-1">
+              全称
+              <input v-model="state.ui.brandName" class="w-24 rounded border border-slate-700 bg-slate-800 px-2 py-0.5 text-xs text-slate-200" />
+            </label>
+            <label class="flex items-center gap-1">
+              简称
+              <input v-model="state.ui.brandShort" class="w-20 rounded border border-slate-700 bg-slate-800 px-2 py-0.5 text-xs text-slate-200" />
+            </label>
+          </div>
+        </div>
+
+        <!-- 右:操作 -->
+        <div class="flex flex-wrap items-center gap-3 text-xs text-slate-400">
           <span class="rounded bg-slate-800 px-2 py-1 text-[11px]">{{ doneCount }}/{{ totalCount }} 文件</span>
 
           <!-- 预览模式总开关:浅 / 深 / 全 / 色(自由背景色) -->
@@ -194,18 +214,6 @@ ${list}
             {{ exporting ? '打包中…' : '⬇ 导出全套 zip(无损)' }}
           </button>
         </div>
-      </div>
-      <!-- 站点名称:用于预览显示,并写入 manifest 的 name / short_name -->
-      <div class="flex flex-wrap items-center gap-x-4 gap-y-1 border-t border-slate-800/60 px-4 py-1.5 text-xs text-slate-400">
-        <span class="text-[11px] text-slate-500">站点名称</span>
-        <label class="flex items-center gap-1">
-          全称
-          <input v-model="state.ui.brandName" class="w-24 rounded border border-slate-700 bg-slate-800 px-2 py-0.5 text-xs text-slate-200" />
-        </label>
-        <label class="flex items-center gap-1">
-          简称
-          <input v-model="state.ui.brandShort" class="w-20 rounded border border-slate-700 bg-slate-800 px-2 py-0.5 text-xs text-slate-200" />
-        </label>
       </div>
     </header>
 
