@@ -70,6 +70,6 @@ const wrapBg = computed(() => (state.ui.previewMode === 'custom' ? state.ui.back
       </div>
     </div>
 
-    <p class="text-[10px] text-slate-500">深色背景自动用深色版 favicon(若已上传)。标签栏仅 16px,确认缩小后清晰。</p>
+    <p class="text-[10px] text-slate-500">深色背景自动用深色版 favicon(若已上传)。标签 / 书签会缩到 16px,留意此时的辨识度。</p>
   </div>
 </template>

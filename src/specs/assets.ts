@@ -105,7 +105,7 @@ export const SLOTS: SlotDef[] = [
   { id: 'apple-touch', fileName: 'apple-touch-icon.png', category: 'ios', format: 'png', width: 180, height: 180, hint: '180px 不透明' },
   // pwa
   { id: 'android-192', fileName: 'android-chrome-192.png', category: 'pwa', format: 'png', width: 192, height: 192, hint: '192px 标准' },
-  { id: 'android-512', fileName: 'android-chrome-512.png', category: 'pwa', format: 'png', width: 512, height: 512, hint: '512px 高清 / 闪屏' },
+  { id: 'android-512', fileName: 'android-chrome-512.png', category: 'pwa', format: 'png', width: 512, height: 512, hint: '512px 高清 / 启动闪屏' },
   { id: 'android-512-mask', fileName: 'android-chrome-512-maskable.png', category: 'pwa', format: 'png', width: 512, height: 512, hint: 'maskable,主体在中心 80%' },
   // avatar
   { id: 'avatar-512', fileName: 'avatar-512.png', category: 'avatar', format: 'png', width: 512, height: 512, hint: '512px 主体居中' },
@@ -125,7 +125,7 @@ export const TILES: TileDef[] = [
   { id: 't-search', label: '搜索引擎结果', preview: 'search-results', category: 'favicon', desc: 'Google / Bing 结果标题旁的小图标' },
   { id: 't-ios', label: 'iOS 主屏', preview: 'ios-home', category: 'ios', desc: 'iPhone / iPad 主屏 · superellipse 裁切' },
   { id: 't-android', label: '安卓 / PWA 桌面', preview: 'android-desk', category: 'pwa', desc: '多形状裁切 + maskable 安全区' },
-  { id: 't-splash', label: 'PWA 启动闪屏', preview: 'pwa-splash', category: 'pwa', desc: '启动时图标 + 背景色(取自 bg)' },
+  { id: 't-splash', label: 'PWA 启动闪屏', preview: 'pwa-splash', category: 'pwa', desc: 'PWA 启动瞬间 · 图标 + 背景色 + 站名' },
   { id: 't-avatar', label: '社交头像', preview: 'avatar', category: 'avatar', desc: '圆 / 圆角裁切 · Twitter / GitHub / 微信' },
   { id: 't-navbar', label: '导航栏', preview: 'navbar', category: 'nav', desc: '桌面 / 移动 / 吸顶 · 透明横版(深浅两版)' },
   { id: 't-footer', label: '页脚 / 邮件', preview: 'footer', category: 'nav', desc: '页脚 · 邮件签名(复用横版 logo)' },

@@ -28,6 +28,6 @@ const { bgLight, bgDark, showLight, showDark, isBoth } = usePreviewBg()
         </div>
       </div>
     </div>
-    <p class="text-[10px] text-slate-500">PWA 启动瞬间全屏显示:图标居中 + 背景色 + 站名。选「色」用自定义背景。</p>
+    <p class="text-[10px] text-slate-500">PWA 启动瞬间全屏:图标 + 背景色 + 站名。背景随「浅 / 深 / 全 / 色」切换。</p>
   </div>
 </template>

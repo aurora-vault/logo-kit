@@ -48,6 +48,6 @@ const darkLogo = computed(() => props.imgDark || props.img)
         </div>
       </div>
     </div>
-    <p class="text-[10px] text-slate-500">页脚 + 邮件签名,浅深两块各含两者可比;深色用深色版 logo(未传回退浅色)。</p>
+    <p class="text-[10px] text-slate-500">页脚 + 邮件签名,深浅两块各含两者便于对比;深色块用深色版 logo(未传则回退浅色)。</p>
   </div>
 </template>

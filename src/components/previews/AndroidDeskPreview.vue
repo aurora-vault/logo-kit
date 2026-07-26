@@ -39,6 +39,6 @@ const shapes = [
         </div>
       </div>
     </div>
-    <p class="text-[10px] text-slate-500">虚线圈 = safe zone。maskable 主体应已在圈内,任何形状都不裁到。</p>
+    <p class="text-[10px] text-slate-500">虚线圈 = safe zone。maskable 主体应落在圈内,任意形状裁切都不伤及主体。</p>
   </div>
 </template>
