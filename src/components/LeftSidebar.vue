@@ -16,12 +16,12 @@ const toggleCat = (catId: string) => (collapsed.value[catId] = !collapsed.value[
 </script>
 
 <template>
-  <aside class="flex h-full w-72 shrink-0 flex-col gap-2 overflow-y-auto border-r border-slate-800 bg-slate-950 p-3">
+  <aside class="flex h-full w-72 shrink-0 flex-col gap-2 overflow-y-auto border-r border-line bg-app p-3">
     <div
       v-for="cat in CATEGORIES"
       :key="cat.id"
-      class="shrink-0 overflow-hidden rounded-lg border bg-slate-900/40 transition-colors"
-      :class="cat.id === selectedCatId ? 'border-blue-500 ring-1 ring-blue-500/30' : 'border-slate-800'"
+      class="shrink-0 overflow-hidden rounded-lg border bg-surface/40 transition-colors"
+      :class="cat.id === selectedCatId ? 'border-blue-500 ring-1 ring-blue-500/30' : 'border-line'"
     >
       <!-- 分类头(可展开/收起) -->
       <button
@@ -29,18 +29,18 @@ const toggleCat = (catId: string) => (collapsed.value[catId] = !collapsed.value[
         @click="toggleCat(cat.id)"
       >
         <span
-          class="text-[10px] text-slate-500 transition-transform"
+          class="text-[10px] text-ink-dim transition-transform"
           :class="collapsed[cat.id] ? '' : 'rotate-90'"
         >▶</span>
         <span class="h-2.5 w-2.5 rounded-full" :style="{ background: cat.accent }"></span>
-        <span class="text-xs font-medium text-slate-200">{{ cat.label }}</span>
-        <span class="ml-auto rounded bg-slate-800 px-1.5 text-[10px] text-slate-400">
+        <span class="text-xs font-medium text-ink">{{ cat.label }}</span>
+        <span class="ml-auto rounded bg-surface-2 px-1.5 text-[10px] text-ink-muted">
           {{ doneOf(cat.id) }}/{{ totalOf(cat.id) }}
         </span>
       </button>
 
       <div v-show="!collapsed[cat.id]">
-        <p class="px-3 pb-1.5 text-[10px] leading-snug text-slate-500">{{ cat.uploadHint }}</p>
+        <p class="px-3 pb-1.5 text-[10px] leading-snug text-ink-dim">{{ cat.uploadHint }}</p>
 
         <div class="space-y-1 p-2 pt-0">
           <SlotRow v-for="slot in slotsByCategory(cat.id)" :key="slot.id" :slot="slot" />

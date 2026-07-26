@@ -14,7 +14,7 @@ const wrapBg = computed(() => (state.ui.previewMode === 'custom' ? state.ui.back
 
 <template>
   <div class="space-y-3">
-    <span class="block text-xs text-slate-400">桌面标签 + 书签栏</span>
+    <span class="block text-xs text-ink-muted">桌面标签 + 书签栏</span>
     <div :class="isBoth ? 'grid grid-cols-2 gap-2' : ''">
       <div v-if="showLight">
         <div class="flex items-end rounded-t-lg border-x border-t border-black/10 p-2" :style="{ background: bgLight }">
@@ -62,7 +62,7 @@ const wrapBg = computed(() => (state.ui.previewMode === 'custom' ? state.ui.back
 
     <!-- 移动地址栏:取自 theme -->
     <div>
-      <div class="mb-1 text-[11px] text-slate-500">移动地址栏主题色(theme)</div>
+      <div class="mb-1 text-[11px] text-ink-dim">移动地址栏主题色(theme)</div>
       <div class="rounded-xl p-2" :style="{ background: wrapBg }">
         <div class="flex items-center gap-2 rounded-full px-3 py-1.5" :style="{ background: state.ui.themeColor }">
           <span class="text-[10px]" :style="{ color: textOn(state.ui.themeColor) }">🔒 shabox.fun</span>
@@ -70,6 +70,6 @@ const wrapBg = computed(() => (state.ui.previewMode === 'custom' ? state.ui.back
       </div>
     </div>
 
-    <p class="text-[10px] text-slate-500">深色背景自动用深色版 favicon(若已上传)。标签 / 书签会缩到 16px,留意此时的辨识度。</p>
+    <p class="text-[10px] text-ink-dim">深色背景自动用深色版 favicon(若已上传)。标签 / 书签会缩到 16px,留意此时的辨识度。</p>
   </div>
 </template>

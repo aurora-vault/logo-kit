@@ -13,7 +13,7 @@ const darkLogo = computed(() => props.imgDark || props.img)
 
 <template>
   <div class="space-y-3">
-    <span class="block text-xs text-slate-400">导航栏(桌面 / 移动 · 深浅两版 logo)</span>
+    <span class="block text-xs text-ink-muted">导航栏(桌面 / 移动 · 深浅两版 logo)</span>
     <div :class="isBoth ? 'flex flex-col gap-2' : 'space-y-2'">
       <div v-if="showLight" class="space-y-2">
         <div class="flex items-center gap-2 rounded-md border border-black/10 px-2.5 py-2" :style="{ background: bgLight }">
@@ -42,6 +42,6 @@ const darkLogo = computed(() => props.imgDark || props.img)
         </div>
       </div>
     </div>
-    <p class="text-[10px] text-slate-500">横版透明单色。深色背景用深色版(未传则回退浅色)。</p>
+    <p class="text-[10px] text-ink-dim">横版透明单色。深色背景用深色版(未传则回退浅色)。</p>
   </div>
 </template>

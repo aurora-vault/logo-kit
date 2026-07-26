@@ -1,7 +1,50 @@
 @import "tailwindcss";
 
-/* Tailwind v4:启用基于 .dark 类的手动深色模式切换(而非 prefers-color-scheme) */
 @custom-variant dark (&:where(.dark, .dark *));
+
+/*
+  界面主题 token:dark 默认,html.light 切亮。
+  经 @theme inline 暴露为 bg-app / bg-surface[-2/-3] / border-line[-strong] / text-ink[-muted/-dim];
+  工具类直接引用 var(--c-*),故 :root / :root.light 切换即时生效。
+  注意:预览的「浅 / 深 / 全 / 色」是 usePreviewBg 独立体系,与此无关。
+*/
+@theme inline {
+  --color-app: var(--c-app);
+  --color-surface: var(--c-surface);
+  --color-surface-2: var(--c-surface-2);
+  --color-surface-3: var(--c-surface-3);
+  --color-line: var(--c-line);
+  --color-line-strong: var(--c-line-strong);
+  --color-ink: var(--c-ink);
+  --color-ink-muted: var(--c-ink-muted);
+  --color-ink-dim: var(--c-ink-dim);
+}
+
+:root {
+  color-scheme: dark;
+  --c-app: #020617; /* slate-950 */
+  --c-surface: #0f172a; /* slate-900 */
+  --c-surface-2: #1e293b; /* slate-800 */
+  --c-surface-3: #334155; /* slate-700 */
+  --c-line: #1e293b; /* slate-800 */
+  --c-line-strong: #334155; /* slate-700 */
+  --c-ink: #f1f5f9; /* slate-100 */
+  --c-ink-muted: #94a3b8; /* slate-400 */
+  --c-ink-dim: #64748b; /* slate-500 */
+}
+
+:root.light {
+  color-scheme: light;
+  --c-app: #f8fafc; /* slate-50 */
+  --c-surface: #ffffff; /* white */
+  --c-surface-2: #f1f5f9; /* slate-100 */
+  --c-surface-3: #e2e8f0; /* slate-200 */
+  --c-line: #e2e8f0; /* slate-200 */
+  --c-line-strong: #cbd5e1; /* slate-300 */
+  --c-ink: #0f172a; /* slate-900 */
+  --c-ink-muted: #64748b; /* slate-500 */
+  --c-ink-dim: #94a3b8; /* slate-400 */
+}
 
 html,
 body,
@@ -11,6 +54,8 @@ body,
 
 body {
   margin: 0;
+  background: var(--c-app);
+  color: var(--c-ink);
   font-family: 'Segoe UI', system-ui, -apple-system, 'Microsoft YaHei', sans-serif;
   font-variant-numeric: tabular-nums;
 }
@@ -30,14 +75,14 @@ input[type='color']::-webkit-color-swatch-wrapper {
   padding: 0;
 }
 input[type='color']::-webkit-color-swatch {
-  border: 1px solid rgba(148, 163, 184, 0.4);
+  border: 1px solid var(--c-line-strong);
   border-radius: 6px;
 }
 
-/* 细滚动条:侧栏 / 预览区统一深色 slim 风格(webkit + firefox) */
+/* 细滚动条:随主题 */
 * {
   scrollbar-width: thin;
-  scrollbar-color: #475569 transparent;
+  scrollbar-color: var(--c-line-strong) transparent;
 }
 *::-webkit-scrollbar {
   width: 8px;
@@ -47,12 +92,12 @@ input[type='color']::-webkit-color-swatch {
   background: transparent;
 }
 *::-webkit-scrollbar-thumb {
-  background: #334155;
+  background: var(--c-line-strong);
   background-clip: padding-box;
   border: 2px solid transparent;
   border-radius: 9999px;
 }
 *::-webkit-scrollbar-thumb:hover {
-  background: #475569;
+  background: var(--c-ink-dim);
   background-clip: padding-box;
 }

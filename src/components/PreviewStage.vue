@@ -128,12 +128,12 @@ onUnmounted(() => window.removeEventListener('keydown', onKey))
     <!-- 选中文件信息(仅在有文件时显示) -->
     <div
       v-if="selectedFile"
-      class="flex flex-wrap items-center gap-x-3 gap-y-1 border-b border-slate-800 px-4 py-2 text-[11px]"
+      class="flex flex-wrap items-center gap-x-3 gap-y-1 border-b border-line px-4 py-2 text-[11px]"
     >
-      <span class="rounded bg-slate-800 px-2 py-0.5 text-slate-200">{{ selectedSlot.fileName }}</span>
-      <span class="text-slate-500">实际 {{ selectedFile.naturalW || '?' }}×{{ selectedFile.naturalH || '?' }}</span>
+      <span class="rounded bg-surface-2 px-2 py-0.5 text-ink">{{ selectedSlot.fileName }}</span>
+      <span class="text-ink-dim">实际 {{ selectedFile.naturalW || '?' }}×{{ selectedFile.naturalH || '?' }}</span>
       <span class="rounded bg-emerald-500/15 px-1.5 py-0.5 text-[10px] text-emerald-300">无损</span>
-      <button class="ml-auto text-slate-400 hover:text-slate-100" @click="downloadOriginal">⬇ 原文件</button>
+      <button class="ml-auto text-ink-muted hover:text-ink" @click="downloadOriginal">⬇ 原文件</button>
     </div>
 
     <!-- 宫格:全部场景自适应排列 -->
@@ -145,31 +145,31 @@ onUnmounted(() => window.removeEventListener('keydown', onKey))
           class="cursor-pointer overflow-hidden rounded-xl border transition-all"
           :class="
             isLinked(item.tile.category)
-              ? 'border-blue-500 bg-slate-900/70 ring-2 ring-blue-500/40'
-              : 'border-slate-800 bg-slate-900/30 hover:border-slate-700'
+              ? 'border-blue-500 bg-surface/70 ring-2 ring-blue-500/40'
+              : 'border-line bg-surface/30 hover:border-line-strong'
           "
           title="单击选中关联 · 双击全屏预览"
           @click="clickTile(item.tile.category)"
           @dblclick="openFullscreen(item)"
         >
-          <div class="flex items-center gap-2 border-b border-slate-800/60 px-3 py-2">
+          <div class="flex items-center gap-2 border-b border-line/60 px-3 py-2">
             <span class="h-2 w-2 rounded-full" :style="{ background: accentOf(item.tile.category) }"></span>
-            <span class="text-xs font-medium text-slate-200">{{ item.tile.label }}</span>
+            <span class="text-xs font-medium text-ink">{{ item.tile.label }}</span>
             <span
               v-if="item.forceVariant"
-              class="rounded bg-slate-700 px-1.5 text-[10px] text-slate-300"
+              class="rounded bg-surface-3 px-1.5 text-[10px] text-ink"
             >{{ item.forceVariant === 'light' ? '浅' : '深' }}</span>
             <span v-if="isLinked(item.tile.category)" class="ml-auto inline-flex items-center gap-1 text-[10px] text-blue-400">
               <span class="h-1.5 w-1.5 rounded-full bg-blue-400"></span>关联
             </span>
-            <span v-else-if="hasFile(item.tile.category)" class="ml-auto text-[10px] text-slate-600">已上传</span>
+            <span v-else-if="hasFile(item.tile.category)" class="ml-auto text-[10px] text-ink-dim">已上传</span>
           </div>
 
           <div class="p-3">
             <component :is="PREVIEWS[item.tile.preview]" v-bind="propsFor(item)" />
           </div>
 
-          <div class="px-3 pb-2.5 text-[10px] leading-snug text-slate-500">{{ item.tile.desc }}</div>
+          <div class="px-3 pb-2.5 text-[10px] leading-snug text-ink-dim">{{ item.tile.desc }}</div>
         </div>
       </div>
     </div>
@@ -178,30 +178,30 @@ onUnmounted(() => window.removeEventListener('keydown', onKey))
     <Teleport to="body">
       <div
         v-if="fullscreenItem"
-        class="fixed inset-0 z-50 flex gap-4 bg-slate-950/95 p-4 backdrop-blur-sm"
+        class="fixed inset-0 z-50 flex gap-4 bg-app/95 p-4 backdrop-blur-sm"
         @click.self="fullscreenItem = null"
       >
         <button
-          class="absolute right-3 top-3 z-10 grid h-8 w-8 place-items-center rounded-full border border-slate-700 bg-slate-900 text-slate-300 hover:bg-slate-800 hover:text-slate-100"
+          class="absolute right-3 top-3 z-10 grid h-8 w-8 place-items-center rounded-full border border-line-strong bg-surface text-ink hover:bg-surface-2 hover:text-ink"
           title="关闭(Esc)"
           @click="fullscreenItem = null"
         >✕</button>
 
         <!-- 主预览(放大) -->
         <div class="flex flex-1 items-center justify-center overflow-auto">
-          <div class="w-full max-w-3xl rounded-xl border border-slate-800 bg-slate-900/60 p-6">
+          <div class="w-full max-w-3xl rounded-xl border border-line bg-surface/60 p-6">
             <component :is="PREVIEWS[fullscreenItem.tile.preview]" v-bind="propsFor(fullscreenItem)" />
           </div>
         </div>
 
         <!-- 关联上传槽(仅该分类) -->
-        <aside class="flex w-80 shrink-0 flex-col overflow-hidden rounded-xl border border-slate-800 bg-slate-900/60">
-          <div class="flex items-center gap-2 border-b border-slate-800 px-3 py-2">
+        <aside class="flex w-80 shrink-0 flex-col overflow-hidden rounded-xl border border-line bg-surface/60">
+          <div class="flex items-center gap-2 border-b border-line px-3 py-2">
             <span class="h-2.5 w-2.5 rounded-full" :style="{ background: accentOf(fullscreenItem.tile.category) }"></span>
-            <span class="text-sm font-medium text-slate-200">{{ categoryById(fullscreenItem.tile.category)!.label }}</span>
-            <span class="ml-auto text-[10px] text-slate-500">关联上传</span>
+            <span class="text-sm font-medium text-ink">{{ categoryById(fullscreenItem.tile.category)!.label }}</span>
+            <span class="ml-auto text-[10px] text-ink-dim">关联上传</span>
           </div>
-          <p class="px-3 py-2 text-[10px] leading-snug text-slate-500">{{ categoryById(fullscreenItem.tile.category)!.uploadHint }}</p>
+          <p class="px-3 py-2 text-[10px] leading-snug text-ink-dim">{{ categoryById(fullscreenItem.tile.category)!.uploadHint }}</p>
           <div class="flex-1 space-y-1 overflow-y-auto p-2 pt-0">
             <SlotRow v-for="slot in slotsByCategory(fullscreenItem.tile.category)" :key="slot.id" :slot="slot" />
           </div>

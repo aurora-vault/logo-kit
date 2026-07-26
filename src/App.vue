@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref, computed, watch, onUnmounted } from 'vue'
+import { ref, computed, watch, onMounted, onUnmounted } from 'vue'
 import { useLogoStore } from './composables/useLogoStore'
 import { setLiveFavicon, resetLiveFavicon } from './composables/useLiveFavicon'
 import { buildLogoPack } from './lib/zip'
@@ -26,6 +26,21 @@ function setCustom(v: string) {
   state.ui.backgroundColor = v
   state.ui.previewMode = 'custom'
 }
+
+/** 界面明暗主题:切换 html.light + 持久化(仅工具外壳风格,与预览浅/深/全/色无关) */
+const THEME_KEY = 'logo-kit-theme'
+function applyTheme(t: 'dark' | 'light'): void {
+  document.documentElement.classList.toggle('light', t === 'light')
+  localStorage.setItem(THEME_KEY, t)
+}
+function toggleTheme(): void {
+  state.ui.uiTheme = state.ui.uiTheme === 'dark' ? 'light' : 'dark'
+}
+watch(() => state.ui.uiTheme, applyTheme)
+onMounted(() => {
+  const saved = localStorage.getItem(THEME_KEY) as 'dark' | 'light' | null
+  if (saved && saved !== state.ui.uiTheme) state.ui.uiTheme = saved
+})
 
 // 真实标签预览:开 → 用第一个已上传的 favicon(svg > 32 > 16 > ico)直设到本页 tab
 let liveTimer: number | undefined
@@ -143,45 +158,45 @@ ${list}
 </script>
 
 <template>
-  <div class="flex h-screen flex-col overflow-hidden bg-slate-950 text-slate-100">
-    <header class="border-b border-slate-800 bg-slate-950/80 backdrop-blur">
+  <div class="flex h-screen flex-col overflow-hidden bg-app text-ink">
+    <header class="border-b border-line bg-app/80 backdrop-blur">
       <div class="flex flex-wrap items-center gap-x-3 gap-y-2 px-4 py-2.5">
         <!-- 左:标题 -->
         <div class="flex items-center gap-3">
           <h1 class="text-lg font-semibold">🔬 logo-kit</h1>
-          <span class="hidden text-xs text-slate-500 sm:inline">无损 · 上传成品 · 全场景宫格预览</span>
+          <span class="hidden text-xs text-ink-dim sm:inline">无损 · 上传成品 · 全场景宫格预览</span>
         </div>
 
         <!-- 中:站点名称(预览显示 + 写入 manifest)-->
         <div class="flex flex-1 justify-center">
-          <div class="flex items-center gap-2 text-xs text-slate-400">
-            <span class="text-[11px] text-slate-500">站点名称</span>
+          <div class="flex items-center gap-2 text-xs text-ink-muted">
+            <span class="text-[11px] text-ink-dim">站点名称</span>
             <label class="flex items-center gap-1">
               全称
-              <input v-model="state.ui.brandName" class="w-24 rounded border border-slate-700 bg-slate-800 px-2 py-0.5 text-xs text-slate-200" />
+              <input v-model="state.ui.brandName" class="w-24 rounded border border-line-strong bg-surface-2 px-2 py-0.5 text-xs text-ink" />
             </label>
             <label class="flex items-center gap-1">
               简称
-              <input v-model="state.ui.brandShort" class="w-20 rounded border border-slate-700 bg-slate-800 px-2 py-0.5 text-xs text-slate-200" />
+              <input v-model="state.ui.brandShort" class="w-20 rounded border border-line-strong bg-surface-2 px-2 py-0.5 text-xs text-ink" />
             </label>
           </div>
         </div>
 
         <!-- 右:操作 -->
-        <div class="flex flex-wrap items-center gap-3 text-xs text-slate-400">
-          <span class="rounded bg-slate-800 px-2 py-1 text-[11px]">{{ doneCount }}/{{ totalCount }} 文件</span>
+        <div class="flex flex-wrap items-center gap-3 text-xs text-ink-muted">
+          <span class="rounded bg-surface-2 px-2 py-1 text-[11px]">{{ doneCount }}/{{ totalCount }} 文件</span>
 
           <!-- 预览模式总开关:浅 / 深 / 全 / 色(自由背景色) -->
           <div class="flex items-center gap-1">
-            <span class="text-[11px] text-slate-500">预览</span>
-            <div class="flex overflow-hidden rounded-md border border-slate-700">
+            <span class="text-[11px] text-ink-dim">预览</span>
+            <div class="flex overflow-hidden rounded-md border border-line-strong">
               <button
                 v-for="m in previewModes"
                 :key="m"
                 :title="m === 'both' ? '浅色与深色并排显示' : m === 'light' ? '只看浅色背景' : '只看深色背景'"
                 :class="[
                   'px-2 py-1 text-[11px]',
-                  state.ui.previewMode === m ? 'bg-slate-700 text-slate-100' : 'text-slate-400 hover:text-slate-200',
+                  state.ui.previewMode === m ? 'bg-surface-3 text-ink' : 'text-ink-muted hover:text-ink',
                 ]"
                 @click="setMode(m)"
               >
@@ -189,7 +204,7 @@ ${list}
               </button>
               <label
                 class="flex items-center px-1.5"
-                :class="state.ui.previewMode === 'custom' ? 'bg-slate-700' : 'hover:bg-slate-800'"
+                :class="state.ui.previewMode === 'custom' ? 'bg-surface-3' : 'hover:bg-surface-2'"
                 title="自由背景色:选色即用此色(= theme + bg),所有卡片统一此底色"
               >
                 <input
@@ -207,6 +222,11 @@ ${list}
             真实标签预览
           </label>
           <button
+            class="grid h-7 w-7 place-items-center rounded-md border border-line-strong text-ink-muted hover:bg-surface-2 hover:text-ink"
+            :title="state.ui.uiTheme === 'dark' ? '切换白天模式' : '切换黑夜模式'"
+            @click="toggleTheme"
+          >{{ state.ui.uiTheme === 'dark' ? '☀' : '☾' }}</button>
+          <button
             class="rounded-lg bg-blue-600 px-4 py-1.5 text-xs font-medium text-white hover:bg-blue-500 disabled:opacity-50"
             :disabled="exporting || doneCount === 0"
             @click="exportAll"
@@ -223,7 +243,7 @@ ${list}
 
       <!-- 侧栏收/展开按钮:贴在侧栏与右栏交界处 -->
       <button
-        class="absolute top-1/2 z-20 grid h-14 w-5 place-items-center rounded-md border border-slate-700 bg-slate-900 text-[11px] text-slate-400 shadow hover:bg-slate-800 hover:text-slate-100"
+        class="absolute top-1/2 z-20 grid h-14 w-5 place-items-center rounded-md border border-line-strong bg-surface text-[11px] text-ink-muted shadow hover:bg-surface-2 hover:text-ink"
         :style="{
           left: state.ui.sidebarCollapsed ? '0px' : '18rem',
           transform: `translate(${state.ui.sidebarCollapsed ? '0' : '-50%'}, -50%)`,

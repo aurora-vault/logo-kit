@@ -13,7 +13,7 @@ const darkLogo = computed(() => props.imgDark || props.img)
 
 <template>
   <div class="space-y-3">
-    <span class="block text-xs text-slate-400">搜索引擎结果(Google / Bing)</span>
+    <span class="block text-xs text-ink-muted">搜索引擎结果(Google / Bing)</span>
     <div :class="isBoth ? 'grid grid-cols-2 gap-2' : ''">
       <div v-if="showLight" class="rounded-md border border-black/10 p-2.5" :style="{ background: bgLight, color: textOn(bgLight) }">
         <div class="flex items-center gap-1.5">
@@ -36,6 +36,6 @@ const darkLogo = computed(() => props.imgDark || props.img)
         <div class="text-[11px] leading-snug opacity-70">技术与生活随笔。文章、归档与 RSS。</div>
       </div>
     </div>
-    <p class="text-[10px] text-slate-500">搜索结果标题旁的 favicon 常被忽略;确认 16px 仍清晰。</p>
+    <p class="text-[10px] text-ink-dim">搜索结果标题旁的 favicon 常被忽略;确认 16px 仍清晰。</p>
   </div>
 </template>

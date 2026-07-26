@@ -16,7 +16,7 @@ const shapes = [
 
 <template>
   <div class="space-y-3">
-    <span class="block text-xs text-slate-400">安卓桌面(多形状裁切 + safe zone)</span>
+    <span class="block text-xs text-ink-muted">安卓桌面(多形状裁切 + safe zone)</span>
     <div :class="isBoth ? 'flex flex-col gap-2' : ''">
       <div v-if="showLight" class="grid grid-cols-4 gap-2 rounded-lg p-3" :style="{ background: bgLight }">
         <div v-for="sh in shapes" :key="sh.id" class="flex flex-col items-center gap-1">
@@ -39,6 +39,6 @@ const shapes = [
         </div>
       </div>
     </div>
-    <p class="text-[10px] text-slate-500">虚线圈 = safe zone。maskable 主体应落在圈内,任意形状裁切都不伤及主体。</p>
+    <p class="text-[10px] text-ink-dim">虚线圈 = safe zone。maskable 主体应落在圈内,任意形状裁切都不伤及主体。</p>
   </div>
 </template>

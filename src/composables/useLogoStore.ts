@@ -12,6 +12,8 @@ export interface LogoUIState {
   previewMode: 'light' | 'dark' | 'both' | 'custom'
   /** 左栏整体是否收起 */
   sidebarCollapsed: boolean
+  /** 界面明暗主题(仅工具外壳风格,与预览浅/深/全/色无关) */
+  uiTheme: 'dark' | 'light'
 }
 
 interface LogoState {
@@ -41,6 +43,7 @@ const state = reactive<LogoState>({
     liveFavicon: false,
     previewMode: 'both',
     sidebarCollapsed: false,
+    uiTheme: 'dark',
   },
 })
 

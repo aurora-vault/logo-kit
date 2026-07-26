@@ -13,7 +13,7 @@ const darkLogo = computed(() => props.imgDark || props.img)
 
 <template>
   <div class="space-y-3">
-    <span class="block text-xs text-slate-400">页脚 / 邮件签名(复用横版 logo)</span>
+    <span class="block text-xs text-ink-muted">页脚 / 邮件签名(复用横版 logo)</span>
     <div :class="isBoth ? 'flex flex-col gap-2' : ''">
       <!-- 浅色块:页脚 + 邮件签名 -->
       <div v-if="showLight" class="space-y-2 rounded-md border border-black/10 p-2.5" :style="{ background: bgLight }">
@@ -48,6 +48,6 @@ const darkLogo = computed(() => props.imgDark || props.img)
         </div>
       </div>
     </div>
-    <p class="text-[10px] text-slate-500">页脚 + 邮件签名,深浅两块各含两者便于对比;深色块用深色版 logo(未传则回退浅色)。</p>
+    <p class="text-[10px] text-ink-dim">页脚 + 邮件签名,深浅两块各含两者便于对比;深色块用深色版 logo(未传则回退浅色)。</p>
   </div>
 </template>

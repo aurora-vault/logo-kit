@@ -11,7 +11,7 @@ const { bgLight, bgDark, showLight, showDark, isBoth } = usePreviewBg()
 
 <template>
   <div class="space-y-3">
-    <span class="block text-xs text-slate-400">PWA 启动闪屏</span>
+    <span class="block text-xs text-ink-muted">PWA 启动闪屏</span>
     <div :class="isBoth ? 'grid grid-cols-2 gap-2' : ''">
       <div v-if="showLight" class="flex items-center justify-center rounded-xl py-10" :style="{ background: bgLight }">
         <div class="flex flex-col items-center gap-2">
@@ -28,6 +28,6 @@ const { bgLight, bgDark, showLight, showDark, isBoth } = usePreviewBg()
         </div>
       </div>
     </div>
-    <p class="text-[10px] text-slate-500">PWA 启动瞬间全屏:图标 + 背景色 + 站名。背景随「浅 / 深 / 全 / 色」切换。</p>
+    <p class="text-[10px] text-ink-dim">PWA 启动瞬间全屏:图标 + 背景色 + 站名。背景随「浅 / 深 / 全 / 色」切换。</p>
   </div>
 </template>

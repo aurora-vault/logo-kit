@@ -9,7 +9,7 @@ const { bgLight, bgDark, showLight, showDark, isBoth } = usePreviewBg()
 
 <template>
   <div class="space-y-3">
-    <span class="block text-xs text-slate-400">社交头像(圆 / 圆角裁切)</span>
+    <span class="block text-xs text-ink-muted">社交头像(圆 / 圆角裁切)</span>
     <div :class="isBoth ? 'flex flex-col gap-2' : ''">
       <div v-if="showLight" class="flex items-center justify-around rounded-lg p-3" :style="{ background: bgLight }">
         <div class="flex flex-col items-center gap-1">
@@ -36,6 +36,6 @@ const { bgLight, bgDark, showLight, showDark, isBoth } = usePreviewBg()
         </div>
       </div>
     </div>
-    <p class="text-[10px] text-slate-500">各平台裁切不同。主体务必居中、四周留白(平台会强行裁圆 / 圆角)。</p>
+    <p class="text-[10px] text-ink-dim">各平台裁切不同。主体务必居中、四周留白(平台会强行裁圆 / 圆角)。</p>
   </div>
 </template>

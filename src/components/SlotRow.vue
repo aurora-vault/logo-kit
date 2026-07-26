@@ -49,11 +49,11 @@ function dimLabel(slot: SlotDef): string {
       :class="
         state.selectedSlotId === slot.id
           ? 'border-blue-500 bg-blue-500/10'
-          : 'border-transparent hover:border-slate-700 hover:bg-slate-800/50'
+          : 'border-transparent hover:border-line-strong hover:bg-surface-2/50'
       "
       @click="selectSlot(slot.id)"
     >
-      <div class="flex h-8 w-8 shrink-0 items-center justify-center rounded bg-slate-950/60">
+      <div class="flex h-8 w-8 shrink-0 items-center justify-center rounded bg-app/60">
         <img
           v-if="state.files[slot.id]"
           :src="state.files[slot.id]!.url"
@@ -61,18 +61,18 @@ function dimLabel(slot: SlotDef): string {
           :style="{ imageRendering: slot.width > 0 && slot.width <= 64 ? 'pixelated' : 'auto' }"
           alt=""
         />
-        <span v-else class="text-[9px] uppercase text-slate-600">{{ slot.format }}</span>
+        <span v-else class="text-[9px] uppercase text-ink-dim">{{ slot.format }}</span>
       </div>
       <div class="min-w-0 flex-1">
-        <div class="truncate text-[11px] text-slate-300">{{ slot.fileName }}</div>
-        <div class="text-[10px] text-slate-500">{{ dimLabel(slot) }} · {{ slot.hint }}</div>
+        <div class="truncate text-[11px] text-ink">{{ slot.fileName }}</div>
+        <div class="text-[10px] text-ink-dim">{{ dimLabel(slot) }} · {{ slot.hint }}</div>
       </div>
       <label
         class="shrink-0 cursor-pointer rounded px-1.5 py-0.5 text-[10px] transition-colors"
         :class="
           state.files[slot.id]
-            ? 'text-slate-400 hover:bg-slate-700 hover:text-slate-100'
-            : 'bg-slate-700 text-slate-100 hover:bg-slate-600'
+            ? 'text-ink-muted hover:bg-surface-3 hover:text-ink'
+            : 'bg-surface-3 text-ink hover:bg-surface-3'
         "
         @click.stop
         @change="onPick($event)"
