@@ -1,45 +1,9 @@
 <script setup lang="ts">
-import { ref } from 'vue'
-import { fileToUploaded } from '../lib/loadImage'
-import { useLogoStore, setFile, selectSlot } from '../composables/useLogoStore'
+import { useSlotUpload } from '../composables/useSlotUpload'
 import type { SlotDef } from '../specs/assets'
 
 const props = defineProps<{ slot: SlotDef }>()
-const { state } = useLogoStore()
-const error = ref('')
-
-function isAcceptable(name: string, type: string): boolean {
-  const n = name.toLowerCase()
-  return type.startsWith('image/') || ['.svg', '.ico', '.png', '.jpg', '.jpeg'].some((ext) => n.endsWith(ext))
-}
-
-async function pick(file: File | undefined | null): Promise<void> {
-  error.value = ''
-  if (!file) return
-  if (!isAcceptable(file.name, file.type)) {
-    error.value = '请选择图片文件(png/svg/ico)'
-    return
-  }
-  try {
-    const f = await fileToUploaded(file)
-    setFile(props.slot.id, f)
-    selectSlot(props.slot.id)
-  } catch (e) {
-    error.value = (e as Error).message
-  }
-}
-
-function onPick(e: Event): void {
-  const input = e.target as HTMLInputElement
-  pick(input.files?.[0])
-  input.value = ''
-}
-
-function dimLabel(slot: SlotDef): string {
-  if (slot.format === 'svg') return '矢量'
-  if (slot.format === 'ico') return '多尺寸'
-  return `${slot.width}×${slot.height}`
-}
+const { state, error, onPick, dimLabel, selectSlot } = useSlotUpload(props.slot)
 </script>
 
 <template>
@@ -65,7 +29,7 @@ function dimLabel(slot: SlotDef): string {
       </div>
       <div class="min-w-0 flex-1">
         <div class="truncate text-[11px] text-ink">{{ slot.fileName }}</div>
-        <div class="text-[10px] text-ink-dim">{{ dimLabel(slot) }} · {{ slot.hint }}</div>
+        <div class="text-[10px] text-ink-dim">{{ dimLabel() }} · {{ slot.hint }}</div>
       </div>
       <label
         class="shrink-0 cursor-pointer rounded px-1.5 py-0.5 text-[10px] transition-colors"

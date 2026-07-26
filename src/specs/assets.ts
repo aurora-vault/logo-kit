@@ -26,6 +26,8 @@ export interface SlotDef {
   width: number
   height: number
   hint: string
+  /** 详细说明(全屏预览页展示):该尺寸用在哪 / 为什么 / 要点 */
+  desc?: string
   /** 深浅变体:transparent 单色 logo 才需要分深浅(目前仅横版) */
   variant?: 'light' | 'dark'
 }
@@ -96,27 +98,72 @@ export const CATEGORIES: CategoryDef[] = [
 
 export const SLOTS: SlotDef[] = [
   // favicon(方形主图标,深浅通用)
-  { id: 'favicon-svg', fileName: 'favicon.svg', category: 'favicon', format: 'svg', width: 0, height: 0, hint: '矢量,标签页首选' },
-  { id: 'favicon-16', fileName: 'favicon-16x16.png', category: 'favicon', format: 'png', width: 16, height: 16, hint: '16px 老浏览器' },
-  { id: 'favicon-32', fileName: 'favicon-32x32.png', category: 'favicon', format: 'png', width: 32, height: 32, hint: '32px 标准标签' },
-  { id: 'favicon-ico', fileName: 'favicon.ico', category: 'favicon', format: 'ico', width: 0, height: 0, hint: '16/32/48 桌面快捷方式兜底' },
-  { id: 'favicon-dark-svg', fileName: 'favicon-dark.svg', category: 'favicon', format: 'svg', width: 0, height: 0, hint: '深色版 · 系统深色时 media 查询自动切', variant: 'dark' },
+  {
+    id: 'favicon-svg', fileName: 'favicon.svg', category: 'favicon', format: 'svg', width: 0, height: 0, hint: '矢量,标签页首选',
+    desc: '浏览器标签页首选。矢量在任何缩放下都锐利清晰,提供这一个就覆盖大多数现代浏览器。',
+  },
+  {
+    id: 'favicon-16', fileName: 'favicon-16x16.png', category: 'favicon', format: 'png', width: 16, height: 16, hint: '16px 老浏览器',
+    desc: '16px。老浏览器、无 SVG 环境与部分书签的回退——极小尺寸务必保证主体可辨。',
+  },
+  {
+    id: 'favicon-32', fileName: 'favicon-32x32.png', category: 'favicon', format: 'png', width: 32, height: 32, hint: '32px 标准标签',
+    desc: '32px。标准标签页尺寸,绝大多数现代浏览器加载的就是它,与 SVG 互补。',
+  },
+  {
+    id: 'favicon-ico', fileName: 'favicon.ico', category: 'favicon', format: 'ico', width: 0, height: 0, hint: '16/32/48 桌面快捷方式兜底',
+    desc: '16/32/48 多尺寸打包 ICO。Windows 桌面快捷方式、老 IE 等兜底场景使用。',
+  },
+  {
+    id: 'favicon-dark-svg', fileName: 'favicon-dark.svg', category: 'favicon', format: 'svg', width: 0, height: 0, hint: '深色版 · 系统深色时 media 查询自动切', variant: 'dark',
+    desc: '深色版矢量。系统切到深色模式时,配合 prefers-color-scheme 媒体查询自动替换标签页图标。',
+  },
   // ios
-  { id: 'apple-touch', fileName: 'apple-touch-icon.png', category: 'ios', format: 'png', width: 180, height: 180, hint: '180px 不透明' },
+  {
+    id: 'apple-touch', fileName: 'apple-touch-icon.png', category: 'ios', format: 'png', width: 180, height: 180, hint: '180px 不透明',
+    desc: '180px。iOS「添加到主屏」的图标。必须不透明背景——透明区会被 iOS 填成纯黑。',
+  },
   // pwa
-  { id: 'android-192', fileName: 'android-chrome-192.png', category: 'pwa', format: 'png', width: 192, height: 192, hint: '192px 标准' },
-  { id: 'android-512', fileName: 'android-chrome-512.png', category: 'pwa', format: 'png', width: 512, height: 512, hint: '512px 高清 / 启动闪屏' },
-  { id: 'android-512-mask', fileName: 'android-chrome-512-maskable.png', category: 'pwa', format: 'png', width: 512, height: 512, hint: 'maskable,主体在中心 80%' },
+  {
+    id: 'android-192', fileName: 'android-chrome-192.png', category: 'pwa', format: 'png', width: 192, height: 192, hint: '192px 标准',
+    desc: '192px。PWA 桌面图标的标准尺寸,安卓主屏与安装流程使用。',
+  },
+  {
+    id: 'android-512', fileName: 'android-chrome-512.png', category: 'pwa', format: 'png', width: 512, height: 512, hint: '512px 高清 / 启动闪屏',
+    desc: '512px。高清桌面图标,同时作为 PWA 启动闪屏的图源。',
+  },
+  {
+    id: 'android-512-mask', fileName: 'android-chrome-512-maskable.png', category: 'pwa', format: 'png', width: 512, height: 512, hint: 'maskable,主体在中心 80%',
+    desc: 'maskable 512。主体须放在中心 80% 安全区内,圆形/圆角/水滴等任意形状裁切都不伤主体。',
+  },
   // avatar
-  { id: 'avatar-512', fileName: 'avatar-512.png', category: 'avatar', format: 'png', width: 512, height: 512, hint: '512px 主体居中' },
+  {
+    id: 'avatar-512', fileName: 'avatar-512.png', category: 'avatar', format: 'png', width: 512, height: 512, hint: '512px 主体居中',
+    desc: '512px。各平台(Twitter / GitHub / 微信)头像。主体务必居中、四周留白,平台会强行裁成圆形或圆角。',
+  },
   // nav 横版(浅色版,用于浅色背景)
-  { id: 'logo-nav-svg', fileName: 'logo-nav.svg', category: 'nav', format: 'svg', width: 0, height: 0, hint: '浅色版 · 矢量横版', variant: 'light' },
-  { id: 'logo-nav-png', fileName: 'logo-nav.png', category: 'nav', format: 'png', width: 480, height: 146, hint: '浅色版 · 480×146', variant: 'light' },
+  {
+    id: 'logo-nav-svg', fileName: 'logo-nav.svg', category: 'nav', format: 'svg', width: 0, height: 0, hint: '浅色版 · 矢量横版', variant: 'light',
+    desc: '浅色版矢量横版(图标+站名)。用在浅色背景的导航栏。',
+  },
+  {
+    id: 'logo-nav-png', fileName: 'logo-nav.png', category: 'nav', format: 'png', width: 480, height: 146, hint: '浅色版 · 480×146', variant: 'light',
+    desc: '浅色版 480×146 PNG 横版,矢量不便时的栅格兜底。',
+  },
   // nav 横版(深色版,用于深色背景)
-  { id: 'logo-nav-dark-svg', fileName: 'logo-nav-dark.svg', category: 'nav', format: 'svg', width: 0, height: 0, hint: '深色版 · 矢量横版', variant: 'dark' },
-  { id: 'logo-nav-dark-png', fileName: 'logo-nav-dark.png', category: 'nav', format: 'png', width: 480, height: 146, hint: '深色版 · 480×146', variant: 'dark' },
+  {
+    id: 'logo-nav-dark-svg', fileName: 'logo-nav-dark.svg', category: 'nav', format: 'svg', width: 0, height: 0, hint: '深色版 · 矢量横版', variant: 'dark',
+    desc: '深色版矢量横版。用在深色背景的导航栏——不传的话,浅色版在深色底上会看不见。',
+  },
+  {
+    id: 'logo-nav-dark-png', fileName: 'logo-nav-dark.png', category: 'nav', format: 'png', width: 480, height: 146, hint: '深色版 · 480×146', variant: 'dark',
+    desc: '深色版 480×146 PNG 横版。',
+  },
   // og
-  { id: 'og-image', fileName: 'og-image.png', category: 'og', format: 'png', width: 1200, height: 630, hint: '1200×630 分享卡' },
+  {
+    id: 'og-image', fileName: 'og-image.png', category: 'og', format: 'png', width: 1200, height: 630, hint: '1200×630 分享卡',
+    desc: '1200×630 社交分享卡。Twitter / 微信 / TG / Facebook 抓取链接时展示。预留四周 padding,品牌标识 + 一句标语,避免边缘被各平台裁切。',
+  },
 ]
 
 /** 右栏宫格预览单元(9 个,覆盖博客 logo 全部使用场景) */

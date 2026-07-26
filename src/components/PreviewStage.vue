@@ -4,7 +4,7 @@ import { useLogoStore, selectSlot } from '../composables/useLogoStore'
 import { TILES, categoryById, slotsByCategory, slotById, type TileDef } from '../specs/assets'
 import type { UploadedFile, PreviewKind } from '../lib/types'
 import { downloadBlob } from '../lib/download'
-import SlotRow from './SlotRow.vue'
+import SlotDetailCard from './SlotDetailCard.vue'
 import BrowserTabPreview from './previews/BrowserTabPreview.vue'
 import SearchResultsPreview from './previews/SearchResultsPreview.vue'
 import IosHomePreview from './previews/IosHomePreview.vue'
@@ -187,10 +187,10 @@ onUnmounted(() => window.removeEventListener('keydown', onKey))
     </div>
 
     <!-- 全屏预览:主区放大 + 侧栏只显关联分类的上传槽 -->
-    <Teleport to="body">
+    <Teleport to="#workspace">
       <div
         v-if="fullscreenItem"
-        class="fixed inset-0 z-50 flex gap-4 bg-app/95 p-4 backdrop-blur-sm"
+        class="absolute inset-0 z-40 flex gap-4 bg-app/95 p-4 backdrop-blur-sm"
         @click.self="fullscreenItem = null"
       >
         <button
@@ -219,16 +219,28 @@ onUnmounted(() => window.removeEventListener('keydown', onKey))
           </div>
         </div>
 
-        <!-- 关联上传槽(仅该分类) -->
-        <aside class="flex w-80 shrink-0 flex-col overflow-hidden rounded-xl border border-line bg-surface/60">
-          <div class="flex items-center gap-2 border-b border-line px-3 py-2">
-            <span class="h-2.5 w-2.5 rounded-full" :style="{ background: accentOf(fullscreenItem.tile.category) }"></span>
-            <span class="text-sm font-medium text-ink">{{ categoryById(fullscreenItem.tile.category)!.label }}</span>
-            <span class="ml-auto text-[10px] text-ink-dim">关联上传</span>
+        <!-- 关联规格:用在哪 / 上传要点 / 详细尺寸 -->
+        <aside class="flex w-96 shrink-0 flex-col overflow-hidden rounded-xl border border-line bg-surface/60">
+          <div class="flex items-center gap-2 border-b border-line px-3 py-2.5">
+            <span class="h-3 w-3 rounded-full" :style="{ background: accentOf(fullscreenItem.tile.category) }"></span>
+            <span class="text-sm font-semibold text-ink">{{ categoryById(fullscreenItem.tile.category)!.label }}</span>
+            <span class="ml-auto rounded bg-surface-2 px-1.5 text-[10px] text-ink-muted">{{ slotsByCategory(fullscreenItem.tile.category).length }} 个尺寸</span>
           </div>
-          <p class="px-3 py-2 text-[10px] leading-snug text-ink-dim">{{ categoryById(fullscreenItem.tile.category)!.uploadHint }}</p>
-          <div class="flex-1 space-y-1 overflow-y-auto p-2 pt-0">
-            <SlotRow v-for="slot in slotsByCategory(fullscreenItem.tile.category)" :key="slot.id" :slot="slot" />
+          <div class="flex-1 space-y-3 overflow-y-auto p-3">
+            <section>
+              <div class="mb-1 text-[10px] font-medium uppercase tracking-wide text-ink-dim">用在哪里</div>
+              <p class="text-[11px] leading-relaxed text-ink-muted">{{ categoryById(fullscreenItem.tile.category)!.scenarios }}</p>
+            </section>
+            <section>
+              <div class="mb-1 text-[10px] font-medium uppercase tracking-wide text-ink-dim">上传要点</div>
+              <p class="text-[11px] leading-relaxed text-ink-muted">{{ categoryById(fullscreenItem.tile.category)!.uploadHint }}</p>
+            </section>
+            <section>
+              <div class="mb-1.5 text-[10px] font-medium uppercase tracking-wide text-ink-dim">详细尺寸</div>
+              <div class="space-y-2">
+                <SlotDetailCard v-for="slot in slotsByCategory(fullscreenItem.tile.category)" :key="slot.id" :slot="slot" />
+              </div>
+            </section>
           </div>
         </aside>
       </div>

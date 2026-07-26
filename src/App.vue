@@ -237,7 +237,7 @@ ${list}
       </div>
     </header>
 
-    <div class="relative flex min-h-0 flex-1">
+    <div id="workspace" class="relative flex min-h-0 flex-1">
       <LeftSidebar v-show="!state.ui.sidebarCollapsed" />
       <PreviewStage />
 
