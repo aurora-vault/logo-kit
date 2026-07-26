@@ -111,13 +111,25 @@ function downloadOriginal(): void {
   if (selectedFile.value) downloadBlob(selectedFile.value.blob, selectedSlot.value.fileName)
 }
 
-/** 双击 tile → 全屏预览(只显关联分类的上传槽) */
+/** 双击 tile → 全屏预览(只显关联分类的上传槽);◀/▶ 或 ←/→ 切换 */
 const fullscreenItem = ref<RenderItem | null>(null)
+const fsIndex = computed(() =>
+  fullscreenItem.value ? renderItems.value.findIndex((i) => i.key === fullscreenItem.value!.key) : -1,
+)
 function openFullscreen(item: RenderItem): void {
   fullscreenItem.value = item
 }
+function stepFullscreen(dir: 1 | -1): void {
+  const items = renderItems.value
+  const idx = fsIndex.value
+  if (idx === -1) return
+  fullscreenItem.value = items[(idx + dir + items.length) % items.length]
+}
 function onKey(e: KeyboardEvent): void {
+  if (!fullscreenItem.value) return
   if (e.key === 'Escape') fullscreenItem.value = null
+  else if (e.key === 'ArrowRight') stepFullscreen(1)
+  else if (e.key === 'ArrowLeft') stepFullscreen(-1)
 }
 onMounted(() => window.addEventListener('keydown', onKey))
 onUnmounted(() => window.removeEventListener('keydown', onKey))
@@ -187,10 +199,23 @@ onUnmounted(() => window.removeEventListener('keydown', onKey))
           @click="fullscreenItem = null"
         >✕</button>
 
-        <!-- 主预览(放大) -->
-        <div class="flex flex-1 items-center justify-center overflow-auto">
+        <!-- 主预览(放大)+ 左右切换 -->
+        <div class="relative flex flex-1 items-center justify-center overflow-auto">
+          <button
+            class="absolute left-2 top-1/2 grid h-9 w-9 -translate-y-1/2 place-items-center rounded-full border border-line-strong bg-surface text-ink-muted hover:bg-surface-2 hover:text-ink"
+            title="上一个(←)"
+            @click="stepFullscreen(-1)"
+          >◀</button>
           <div class="w-full max-w-3xl rounded-xl border border-line bg-surface/60 p-6">
             <component :is="PREVIEWS[fullscreenItem.tile.preview]" v-bind="propsFor(fullscreenItem)" />
+          </div>
+          <button
+            class="absolute right-2 top-1/2 grid h-9 w-9 -translate-y-1/2 place-items-center rounded-full border border-line-strong bg-surface text-ink-muted hover:bg-surface-2 hover:text-ink"
+            title="下一个(→)"
+            @click="stepFullscreen(1)"
+          >▶</button>
+          <div class="pointer-events-none absolute bottom-2 left-1/2 -translate-x-1/2 rounded-full bg-surface-2/80 px-2.5 py-0.5 text-[10px] text-ink-muted">
+            {{ fsIndex + 1 }} / {{ renderItems.length }} · {{ fullscreenItem.tile.label }}
           </div>
         </div>
 

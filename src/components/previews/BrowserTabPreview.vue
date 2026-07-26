@@ -16,8 +16,9 @@ const wrapBg = computed(() => (state.ui.previewMode === 'custom' ? state.ui.back
   <div class="space-y-3">
     <span class="block text-xs text-ink-muted">桌面标签 + 书签栏</span>
     <div :class="isBoth ? 'grid grid-cols-2 gap-2' : ''">
-      <div v-if="showLight">
-        <div class="flex items-end rounded-t-lg border-x border-t border-black/10 p-2" :style="{ background: bgLight }">
+      <!-- 浅色浏览器:整框压在 bgLight 上,白条不再透出主题卡色 -->
+      <div v-if="showLight" class="overflow-hidden rounded-lg border border-black/10" :style="{ background: bgLight }">
+        <div class="flex items-end p-2">
           <div class="inline-flex items-center gap-1.5 rounded-t-md bg-white/70 px-2 py-1.5 shadow-sm" :style="{ color: textOn(bgLight) }">
             <img v-if="img" :src="img.url" class="h-4 w-4" style="image-rendering: pixelated" alt="fav" />
             <span v-else class="h-4 w-4 rounded-sm border border-dashed border-slate-400"></span>
@@ -25,10 +26,10 @@ const wrapBg = computed(() => (state.ui.previewMode === 'custom' ? state.ui.back
             <span class="text-[11px] opacity-40">×</span>
           </div>
         </div>
-        <div class="flex items-center gap-2 border-x border-b border-black/10 bg-white/40 px-3 py-1.5" :style="{ color: textOn(bgLight) }">
+        <div class="flex items-center gap-2 bg-white/40 px-3 py-1.5" :style="{ color: textOn(bgLight) }">
           <span class="text-[10px]">🔒</span><span class="text-[11px]">shabox.fun</span>
         </div>
-        <div class="flex items-center gap-2 rounded-b-lg border-x border-b border-black/10 bg-white/20 px-3 py-1.5" :style="{ color: textOn(bgLight) }">
+        <div class="flex items-center gap-2 bg-white/20 px-3 py-1.5" :style="{ color: textOn(bgLight) }">
           <span class="inline-flex items-center gap-1 text-[11px]">
             <img v-if="img" :src="img.url" class="h-3.5 w-3.5" style="image-rendering: pixelated" alt="" />
             <span v-else class="h-3.5 w-3.5 rounded-sm border border-dashed border-slate-400"></span>
@@ -37,19 +38,20 @@ const wrapBg = computed(() => (state.ui.previewMode === 'custom' ? state.ui.back
           <span class="text-[11px] opacity-50">☆</span>
         </div>
       </div>
-      <div v-if="showDark">
-        <div class="flex items-end rounded-t-lg border-x border-t border-white/10 p-2" :style="{ background: bgDark }">
-          <div class="inline-flex items-center gap-1.5 rounded-t-md bg-white/10 px-2 py-1.5" :style="{ color: textOn(bgDark) }">
+      <!-- 深色浏览器 -->
+      <div v-if="showDark" class="overflow-hidden rounded-lg border border-white/10" :style="{ background: bgDark }">
+        <div class="flex items-end p-2">
+          <div class="inline-flex items-center gap-1.5 rounded-t-md bg-white/10 px-2 py-1.5 shadow-sm" :style="{ color: textOn(bgDark) }">
             <img v-if="darkLogo" :src="darkLogo.url" class="h-4 w-4" style="image-rendering: pixelated" alt="fav" />
             <span v-else class="h-4 w-4 rounded-sm border border-dashed border-slate-500"></span>
             <span class="truncate text-[11px]">{{ state.ui.brandName }}</span>
             <span class="text-[11px] opacity-40">×</span>
           </div>
         </div>
-        <div class="flex items-center gap-2 border-x border-b border-white/10 bg-white/5 px-3 py-1.5" :style="{ color: textOn(bgDark) }">
+        <div class="flex items-center gap-2 bg-white/5 px-3 py-1.5" :style="{ color: textOn(bgDark) }">
           <span class="text-[10px]">🔒</span><span class="text-[11px]">shabox.fun</span>
         </div>
-        <div class="flex items-center gap-2 rounded-b-lg border-x border-b border-white/10 bg-white/5 px-3 py-1.5" :style="{ color: textOn(bgDark) }">
+        <div class="flex items-center gap-2 bg-white/5 px-3 py-1.5" :style="{ color: textOn(bgDark) }">
           <span class="inline-flex items-center gap-1 text-[11px]">
             <img v-if="darkLogo" :src="darkLogo.url" class="h-3.5 w-3.5" style="image-rendering: pixelated" alt="" />
             <span v-else class="h-3.5 w-3.5 rounded-sm border border-dashed border-slate-500"></span>

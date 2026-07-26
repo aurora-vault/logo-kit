@@ -40,9 +40,7 @@ const toggleCat = (catId: string) => (collapsed.value[catId] = !collapsed.value[
       </button>
 
       <div v-show="!collapsed[cat.id]">
-        <p class="px-3 pb-1.5 text-[10px] leading-snug text-ink-dim">{{ cat.uploadHint }}</p>
-
-        <div class="space-y-1 p-2 pt-0">
+        <div class="space-y-1 p-2">
           <SlotRow v-for="slot in slotsByCategory(cat.id)" :key="slot.id" :slot="slot" />
         </div>
       </div>
