@@ -186,13 +186,12 @@ onUnmounted(() => window.removeEventListener('keydown', onKey))
       </div>
     </div>
 
-    <!-- 全屏预览:主区放大 + 侧栏只显关联分类的上传槽 -->
-    <Teleport to="#workspace">
-      <div
-        v-if="fullscreenItem"
-        class="absolute inset-0 z-40 flex gap-4 bg-app/95 p-4 backdrop-blur-sm"
-        @click.self="fullscreenItem = null"
-      >
+    <!-- 全屏预览:absolute 锚到 #workspace(relative),仅盖工作区,顶部 header 保留在上 -->
+    <div
+      v-if="fullscreenItem"
+      class="absolute inset-0 z-50 flex gap-4 bg-app/95 p-4 backdrop-blur-sm"
+      @click.self="fullscreenItem = null"
+    >
         <button
           class="absolute right-3 top-3 z-10 grid h-8 w-8 place-items-center rounded-full border border-line-strong bg-surface text-ink hover:bg-surface-2 hover:text-ink"
           title="关闭(Esc)"
@@ -244,6 +243,5 @@ onUnmounted(() => window.removeEventListener('keydown', onKey))
           </div>
         </aside>
       </div>
-    </Teleport>
   </section>
 </template>
