@@ -163,6 +163,11 @@ ${list}
       <div class="flex flex-wrap items-center gap-x-3 gap-y-2 px-4 py-2.5">
         <!-- 左:标题 -->
         <div class="flex items-center gap-3">
+          <button
+            class="grid h-8 w-8 place-items-center rounded-md border border-line-strong text-ink-muted hover:bg-surface-2 hover:text-ink md:hidden"
+            title="文件列表"
+            @click="state.ui.mobileNavOpen = !state.ui.mobileNavOpen"
+          >☰</button>
           <h1 class="text-lg font-semibold">🔬 logo-kit</h1>
           <span class="hidden text-xs text-ink-dim sm:inline">无损 · 上传成品 · 全场景宫格预览</span>
         </div>
@@ -238,12 +243,17 @@ ${list}
     </header>
 
     <div id="workspace" class="relative flex min-h-0 flex-1">
-      <LeftSidebar v-show="!state.ui.sidebarCollapsed" />
+      <div
+        v-if="state.ui.mobileNavOpen"
+        class="absolute inset-0 z-30 bg-black/40 md:hidden"
+        @click="state.ui.mobileNavOpen = false"
+      ></div>
+      <LeftSidebar />
       <PreviewStage />
 
       <!-- 侧栏收/展开按钮:贴在侧栏与右栏交界处 -->
       <button
-        class="absolute top-1/2 z-20 grid h-14 w-5 place-items-center rounded-md border border-line-strong bg-surface text-[11px] text-ink-muted shadow hover:bg-surface-2 hover:text-ink"
+        class="absolute top-1/2 z-20 hidden h-14 w-5 place-items-center rounded-md border border-line-strong bg-surface text-[11px] text-ink-muted shadow hover:bg-surface-2 hover:text-ink md:grid"
         :style="{
           left: state.ui.sidebarCollapsed ? '0px' : '18rem',
           transform: `translate(${state.ui.sidebarCollapsed ? '0' : '-50%'}, -50%)`,

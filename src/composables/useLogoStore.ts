@@ -14,6 +14,8 @@ export interface LogoUIState {
   sidebarCollapsed: boolean
   /** 界面明暗主题(仅工具外壳风格,与预览浅/深/全/色无关) */
   uiTheme: 'dark' | 'light'
+  /** 移动端导航抽屉是否展开(桌面端用 sidebarCollapsed) */
+  mobileNavOpen: boolean
 }
 
 interface LogoState {
@@ -44,6 +46,7 @@ const state = reactive<LogoState>({
     previewMode: 'both',
     sidebarCollapsed: false,
     uiTheme: 'dark',
+    mobileNavOpen: false,
   },
 })
 

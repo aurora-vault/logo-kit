@@ -16,7 +16,13 @@ const toggleCat = (catId: string) => (collapsed.value[catId] = !collapsed.value[
 </script>
 
 <template>
-  <aside class="flex h-full w-72 shrink-0 flex-col gap-2 overflow-y-auto border-r border-line bg-app p-3">
+  <aside
+    class="absolute inset-y-0 left-0 z-40 flex w-72 flex-col gap-2 overflow-y-auto border-r border-line bg-app p-3 shadow-2xl transition-transform duration-200 md:static md:z-auto md:shrink-0 md:translate-x-0 md:shadow-none md:transition-none"
+    :class="[
+      state.ui.sidebarCollapsed ? 'md:hidden' : '',
+      state.ui.mobileNavOpen ? 'translate-x-0' : '-translate-x-full',
+    ]"
+  >
     <div
       v-for="cat in CATEGORIES"
       :key="cat.id"
