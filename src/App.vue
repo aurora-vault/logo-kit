@@ -195,9 +195,9 @@ ${list}
           </button>
         </div>
       </div>
-      <!-- manifest / 主题元数据 -->
+      <!-- PWA manifest:名称 + 短名 -->
       <div class="flex flex-wrap items-center gap-x-4 gap-y-1 border-t border-slate-800/60 px-4 py-1.5 text-xs text-slate-400">
-        <span class="text-[11px] text-slate-500">manifest / 主题</span>
+        <span class="text-[11px] text-slate-500">PWA manifest</span>
         <label class="flex items-center gap-1">
           名称
           <input v-model="state.ui.brandName" class="w-24 rounded border border-slate-700 bg-slate-800 px-2 py-0.5 text-xs text-slate-200" />
@@ -206,7 +206,6 @@ ${list}
           短名
           <input v-model="state.ui.brandShort" class="w-20 rounded border border-slate-700 bg-slate-800 px-2 py-0.5 text-xs text-slate-200" />
         </label>
-        <span class="text-[10px] text-slate-600">theme / bg 取自「预览 · 色」选项</span>
       </div>
     </header>
 
