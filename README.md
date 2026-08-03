@@ -45,7 +45,7 @@ npm run build    # 产物在 dist/
 
 ## 部署
 
-容器化静态托管(nginx)。`docker compose up -d --build`,Nginx Proxy Manager 反代 `kit.shabox.fun → logo-kit:80`。完整规范见 DevOS `.core/ai-context/05_部署规范.md`。
+容器化静态托管(nginx)。`docker compose up -d --build`,Nginx Proxy Manager 反代 `kit.aurya.cc → logo-kit:80`。完整规范见 DevOS `.core/ai-context/05_部署规范.md`。
 
 ## 技术栈
 
